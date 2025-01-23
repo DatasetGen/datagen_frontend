@@ -6,7 +6,6 @@ import { FormikInput, FormikSelect, FormikPasswordInput, FormikTextArea } from '
 import FormikButton from "./FormikButton.tsx";
 
 export default {
-    title: 'Formik Fields',
     component: FormikInput,
     subcomponents: { FormikPasswordInput, FormikSelect, FormikTextArea },
 } as Meta;
