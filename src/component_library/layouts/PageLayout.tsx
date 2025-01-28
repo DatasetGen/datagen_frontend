@@ -10,6 +10,8 @@ interface Props extends StyleSystemProps{
     isDetailed?: boolean;
     children?: React.ReactNode;
     status?: "pending" | "success" | "error";
+    backPage ?: string,
+    headerExtension ?: React.ReactNode
 }
 
 const backButtonStyle = tv({
@@ -46,7 +48,7 @@ const containerStyle = tv({
     },
 });
 
-function PageLayout({ title, children, isDetailed, status, size = "xl", colorSchema = "primary" }: Props) {
+function PageLayout({ title, children, isDetailed, status, backPage, size = "xl", colorSchema = "primary", headerExtension}: Props) {
     const navigate = useNavigate();
 
     if (status === "pending") return <div>Loading...</div>;
@@ -54,16 +56,23 @@ function PageLayout({ title, children, isDetailed, status, size = "xl", colorSch
 
     return (
         <section className={containerStyle({ size, colorSchema })}>
-            <nav className="flex gap-3 items-center mb-4">
+            <nav className="flex gap-3 items-center mb-4 justify-between">
+                <div className="flex gap-3 items-center">
                 {isDetailed && (
                     <div
-                        onClick={() => navigate(-1)}
+                        onClick={() => navigate(backPage || -1)}
                         className={backButtonStyle()}
                     >
                         <BiArrowBack size={20} />
                     </div>
                 )}
                 {title && <Title size="lg">{title}</Title>}
+                </div>
+                <div>
+                    {
+                        headerExtension
+                    }
+                </div>
             </nav>
             <div>
             {children}

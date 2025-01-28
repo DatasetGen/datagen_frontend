@@ -14,13 +14,17 @@ const styles = tv({
             "xl": "p-4",
         },
         "colorSchema": {
-            "primary": "bg-gray-200 hover:bg-gray-200 text-gray-500 active:bg-gray-100",
-            "secondary": "bg-white hover:bg-gray-100 text-gray-500 active:bg-white",
+            "primary": "bg-gray-200 hover:!bg-gray-300 text-gray-500 active:bg-gray-100",
+            "secondary": "bg-white hover:!bg-gray-100 text-gray-500 active:bg-white",
             "brand_primary": "bg-brand_primary-500 hover:bg-brand_primary-700 active:bg-brand_primary-400 text-white",
             "brand_secondary": "bg-brand_secondary-500 text-white hover:bg-brand_secondary-200 active:bg-brand_secondary-700",
         },
         "disabled": {
             true: "bg-gray-100 hover:!bg-gray-100 text-gray-400 !cursor-not-allowed",
+            false: ""
+        },
+        "danger": {
+            true: "bg-red-500 hover:!bg-red-600 text-white",
             false: ""
         }
     },
@@ -32,13 +36,14 @@ const styles = tv({
 
 export interface ButtonProps extends StyleSystemProps, Omit<DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, "size">{
     loading?:boolean,
-    disabled ?: boolean
+    disabled ?: boolean,
+    danger?: boolean,
 }
 
-function Button({size, loading, colorSchema, children, disabled, ...props}: ButtonProps) {
+function Button({size, loading, colorSchema, children, disabled, danger, ...props}: ButtonProps) {
     return (
-        <button {...props} className={styles({size, colorSchema, disabled})} >
-            {loading && <Spinner size={size} colorSchema={colorSchema} disabled={disabled}></Spinner>}
+        <button {...props} className={styles({size, colorSchema, disabled, danger})} >
+            {loading && <Spinner size={size} colorSchema={colorSchema} disabled={disabled} danger={danger}></Spinner>}
             {children}
         </button>
     );

@@ -73,7 +73,7 @@ export const innerElementStyle = tv({
 });
 
 export const sidebarWrapperStyle = tv({
-    base: "h-[100vh]",
+    base: "h-[100vh] relative",
     variants: {
         size: {
             sm: "ml-[220px]",

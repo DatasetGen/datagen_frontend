@@ -1,21 +1,20 @@
 import * as arc from '@ark-ui/react/dialog';
 import { Portal } from "@ark-ui/react";
-import Title from "./texts/Title.tsx";
+import Title from "../texts/Title.tsx";
 import { MdClose } from "react-icons/md";
 import { tv } from "tailwind-variants";
-import {StyleSystemProps} from "./types.ts";
+import {StyleSystemProps} from "../types.ts";
 import React from "react";
 import { UseDialogReturn} from "@ark-ui/react/dialog";
 
 export interface DialogProps extends StyleSystemProps{
-    trigger?: React.ReactNode;
     children?: React.ReactNode;
     title?: string;
     dialog: UseDialogReturn
 }
 
 const dialogVariants = tv({
-    base: "gap-5 bg-white p-6 rounded-lg shadow-lg w-full relative",
+    base: "gap-5 bg-white p-6 rounded-xl shadow-lg w-full relative z-50",
     variants: {
         size: {
             sm: "max-w-md",
@@ -29,15 +28,12 @@ const dialogVariants = tv({
     },
 });
 
-const Dialog = ({ size = 'sm', title, trigger, children, dialog }: DialogProps) => {
+const Dialog = ({ size = 'sm', title, children, dialog }: DialogProps) => {
     return (
         <arc.Dialog.RootProvider value={dialog}>
-            <arc.Dialog.Trigger>
-                {trigger}
-            </arc.Dialog.Trigger>
             <Portal>
-                <arc.Dialog.Backdrop className="w-full h-[100vh] fixed bg-black bg-opacity-15 top-0 left-0" />
-                <arc.Dialog.Positioner className="fixed inset-0 flex items-center justify-center">
+                <arc.Dialog.Backdrop className="w-full h-[100vh] fixed bg-black bg-opacity-15 top-0 left-0 z-40" />
+                <arc.Dialog.Positioner className="fixed inset-0 flex items-center justify-center z-50">
                     <arc.Dialog.Content className={dialogVariants({ size })}>
                         <arc.Dialog.Title asChild>
                             <Title size="md">{title}</Title>

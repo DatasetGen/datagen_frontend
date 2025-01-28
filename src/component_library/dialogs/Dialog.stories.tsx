@@ -1,7 +1,7 @@
 // @ts-ignore
 
 import type { Meta, StoryObj } from '@storybook/react';
-import Dialog, {DialogProps} from './Dialog';
+import Dialog, {DialogProps} from './Dialog.tsx';
 import {useDialog} from "@ark-ui/react";
 
 const meta = {
@@ -16,15 +16,15 @@ const DialogWrapper = (args: DialogProps) => {
   const dialog = useDialog();
 
   return (
-      <Dialog
-          {...args}
-          trigger={
-            <button>Open Dialog</button>
-          }
-          dialog={dialog}
-      >
-        {args.children}
-      </Dialog>
+      <>
+          <button onClick={() => dialog.setOpen(true)}>open</button>
+          <Dialog
+              {...args}
+              dialog={dialog}
+          >
+            {args.children}
+          </Dialog>
+      </>
   );
 };
 

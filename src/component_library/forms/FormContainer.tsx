@@ -23,7 +23,7 @@ function FormContainer<e>({size, leftIcon, rightIcon, colorSchema, label, childr
     return (
         <div className="grid gap-2">
             {
-                label && <label className="font-semibold text-gray-400 text-sm">{label}</label>
+                label && <label className="font-semibold text-gray-600 text-sm">{label}</label>
             }
             <div className={base()}>
                 {

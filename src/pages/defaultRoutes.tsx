@@ -13,6 +13,8 @@ import ModelsPage from "./App/pages/Models/ModelsPage.tsx";
 
 import React from "react";
 import {useAuth} from "../api/auth/useAuth.ts";
+import DatasetHomePage from "./App/pages/DatasetDetailed/pages/Home/DatasetHomePage.tsx";
+import ImageDetailedPage from "./App/pages/ImageDetailed/ImageDetailedPage.tsx";
 
 const OnlyAuthenticated = ({ children }: {children : React.ReactNode}) => {
     const { data, isLoading, isError } = useAuth();
@@ -40,17 +42,21 @@ function DefaultRoutes() {
                 <Route index element={<SignInPage/>}></Route>
                 <Route path="signup" element={<SignUpPage/>}></Route> </Route>
             <Route path="/app" element={<OnlyAuthenticated><AppPage/></OnlyAuthenticated>}>
-
-                <Route index element={<HomePage/>}/>
+                <Route index element={<Navigate to="home"/>} />
+                <Route path="home" element={<HomePage/>}/>
                 <Route path="models" element={<ModelsPage/>}/>
                 <Route path="datasets" element={<DatasetsPage/>}>
-                    <Route path=":dataset_id" element={<DatasetDetailedPage/>}>
-                        <Route path="configuration" element={<DatasetConfigurationPage/>}></Route>
-                        <Route index element={<DatasetDataPage/>}></Route>
-                    </Route>
+                </Route>
+                <Route path="datasets/:dataset_id" element={<DatasetDetailedPage/>}>
+                    <Route index element={<Navigate to="dataset_general"/>}></Route>
+                    <Route path="dataset_general" element={<DatasetHomePage/>}></Route>
+                    <Route path="dataset_configuration" element={<DatasetConfigurationPage/>}></Route>
+                    <Route path="dataset_data" element={<DatasetDataPage/>}></Route>
                 </Route>
                 <Route path="configuration" element={<ConfigurationPage/>}>
                 </Route>
+            </Route>
+            <Route path="/app/datasets/:dataset_id/image_editor/:image_id" element={<OnlyAuthenticated><ImageDetailedPage/></OnlyAuthenticated>}>
             </Route>
         </Routes>
     );

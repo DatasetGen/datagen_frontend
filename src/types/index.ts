@@ -5,12 +5,22 @@ export type Dataset = {
     total_weight: string;
     name: string;
     description: string;
-    labels: Label[];
+    thumbnail: string;
+    labels: DatasetLabel[];
 };
 
-export type Label = {
+export type DatasetLabel = {
     id: number;
     name: string;
     slug: string;
     color: string;
+};
+
+export type DatasetImage = {
+    id: number;
+    image: string;
+    total_weight: string;
+    extension: string;
+    name: string;
+    labels: string[]
 };
