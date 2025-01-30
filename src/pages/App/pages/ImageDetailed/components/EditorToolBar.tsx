@@ -1,5 +1,6 @@
 import FormIconButton from "../../../../../component_library/forms/FormIconButton.tsx";
 import {
+    BiExpand,
     BiFullscreen,
     BiMove,
     BiPointer,
@@ -45,19 +46,16 @@ function EditorToolBar() {
             <EditorIconButton toolName="move">
                 <BiMove></BiMove>
             </EditorIconButton>
-            <FormIconButton size="md" colorSchema="secondary">
-                <BiRotateLeft></BiRotateLeft>
-            </FormIconButton>
-            <FormIconButton size="md" colorSchema="secondary">
+            <FormIconButton size="md" colorSchema="secondary" onClick={() => canvasInstance?.fit()}>
                 <BiFullscreen></BiFullscreen>
             </FormIconButton>
             <div className="w-full h-[1px] bg-gray-100"></div>
             <EditorIconButton toolName="bounding_box">
                 <BiSquare></BiSquare>
             </EditorIconButton>
-            <FormIconButton size="md" colorSchema="secondary">
+            <EditorIconButton toolName="polygon">
                 <BiShapePolygon></BiShapePolygon>
-            </FormIconButton>
+            </EditorIconButton>
             <div className="w-full h-[1px] bg-gray-100"></div>
             <FormIconButton size="md" colorSchema="secondary">
                 <BsStars></BsStars>

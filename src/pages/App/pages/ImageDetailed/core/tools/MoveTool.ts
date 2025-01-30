@@ -6,6 +6,8 @@ export class MoveTool implements EditorTool {
     private stack: any[] = []
 
     onSelect(canvas: EditorCanvas, prevTool?: EditorTool){
+        this.stack.push(canvas.defaultCursor)
+        canvas.defaultCursor="move"
         this.stack.push(canvas._canEditElements)
         canvas.canEditElements = false
         this.stack.push(canvas.canZoom)
@@ -18,5 +20,6 @@ export class MoveTool implements EditorTool {
         canvas.canPan = this.stack.pop();
         canvas.canZoom = this.stack.pop();
         canvas._canEditElements = this.stack.pop()
+        canvas.defaultCursor=this.stack.pop()
     };
 }

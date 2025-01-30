@@ -16,6 +16,9 @@ export class EditorCanvas extends fabric.Canvas {
     public initialize(image: string) {
         const canvasWidth = window.innerWidth - 260;
         const canvasHeight = window.innerHeight;
+        this.preserveObjectStacking = true;
+        this.enableRetinaScaling=true;
+        this.uniformScaling=false
 
         fabric.Image.fromURL(image).then((img) => {
             const scale = Math.min(canvasWidth / img.width, canvasHeight / img.height);
@@ -23,7 +26,7 @@ export class EditorCanvas extends fabric.Canvas {
             this.backgroundImage = img
             this.zoomToPoint(
                 new fabric.Point(this.width / 2, this.height / 2),
-                0.6
+                0.8
             );
             this.renderAll()
         })
@@ -51,7 +54,7 @@ export class EditorCanvas extends fabric.Canvas {
         })
     }
     public deselectTool(){
-        this.selectTool(this.prevTool?.name ?? "")
+        this.selectTool("cursor")
     }
 
     public disableInteraction(){
@@ -88,9 +91,34 @@ export class EditorCanvas extends fabric.Canvas {
         return this._canEditElements;
     }
 
-    resetZoom(){
-
+    fit() {
+        this.setViewportTransform([1, 0, 0, 1, 0, 0]); // Reset transform matrix
+        this.zoomToPoint(new fabric.Point(this.width / 2, this.height / 2), 0.8); // Reset zoom to 1x
+        this.renderAll();
     }
+
+    requestFullScreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().then(() => {
+                this.resizeCanvas();
+            }).catch(err => {
+                console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+            });
+        } else {
+            document.exitFullscreen();
+        }
+    }
+
+    private resizeCanvas() {
+        this.setDimensions({
+            width: window.innerWidth,
+            height: window.innerHeight
+        });
+
+        this.renderAll();
+    }
+
+
 }
 
 export interface EditorPlugin{

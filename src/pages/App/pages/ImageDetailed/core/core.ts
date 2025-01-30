@@ -5,6 +5,7 @@ import {ZoomPlugin} from "./plugins/ZoomPlugin.ts";
 import {CursorTool} from "./tools/CursorTool.ts";
 import {MoveTool} from "./tools/MoveTool.ts";
 import {BoundingBoxTool} from "./tools/BoundingBoxTool.ts";
+import {PolygonTool} from "./tools/PolygonTool.ts";
 
 
 interface EditorCanvasStore {
@@ -26,7 +27,8 @@ export const useEditorCanvasStore = create<EditorCanvasStore>((set) => ({
             editor.addTool(new CursorTool())
             editor.addTool(new MoveTool())
             editor.addTool(new BoundingBoxTool())
-            editor.selectTool("move")
+            editor.addTool(new PolygonTool())
+            editor.selectTool("cursor")
             return { canvasInstance: editor  };
         });
     },

@@ -13,8 +13,9 @@ export class PanningPlugin implements EditorPlugin{
 
     plug(canvas: EditorCanvas){
         this.mouseDown= (opt: TPointerEventInfo<MouseEvent>) => {
-            if(!canvas.canPan) return;
+            if(!canvas.canPan ) return;
             const evt = opt.e;
+            console.log(opt.e.button)
             if (opt.target) return;
             canvas.isDragging = true;
             canvas.selection = false;
@@ -22,7 +23,7 @@ export class PanningPlugin implements EditorPlugin{
             canvas.lastPosY = evt.clientY;
         }
         this.mouseMove = (opt: TPointerEventInfo<MouseEvent>) => {
-                if (!canvas.canPan || !canvas.isDragging) return; // <-- Asegúrate de que canPan sea true
+                if (!canvas.isDragging) return; // <-- Asegúrate de que canPan sea true
                 const e = opt.e;
                 const vpt = canvas.viewportTransform!;
                 vpt[4] += e.clientX - canvas.lastPosX;
