@@ -93,10 +93,6 @@ export class BoundingBoxTool implements EditorTool {
             canvas.renderAll();
         };
 
-        //canvas.on('zoom', updateLines);
-        //canvas.on('viewport:modified', updateLines);
-
-
         this.onMouseDown = (opt) => {
             this.points.push(new Point(opt.scenePoint.x, opt.scenePoint.y))
             console.log(this.points)
@@ -106,40 +102,18 @@ export class BoundingBoxTool implements EditorTool {
                 const y1 = this.points[this.points[0].y <this.points[1].y ? 0 : 1].y
                 const y2 = this.points[this.points[0].y <this.points[1].y ? 1 : 0].y
 
-                const rect = new Rect({
-                    left: x1,
-                    top: y1,
-                    stroke: "red",
-                    strokeWidth: 1,
-                    fill: 'rgba(255, 0, 0, 0.1)',
-                    width: x2 - x1,
-                    height: y2 - y1,
-                    strokeUniform: true,
-                    noScaleCache: true,
-                    cornerStyle: 'circle',
-                    cornerColor: "red",
-                    transparentCorners: false,
-                    cornerStrokeColor: 'red',
-                    borderColor: "red",
-                });
-                rect.on("mouseover", () => {
-                    rect.set({
-                        fill: 'rgba(255, 0, 0, 0.4)',
-                    });
-                    canvas?.renderAll();
-                });
+                const point = [x1, y1]
+                const width = x2 - x1
+                const height = y2 - y1
 
-                rect.on("mouseout", () => {
-                    rect.set({
-                        fill: 'rgba(255, 0, 0, 0.1)',
-                    });
-                    canvas?.renderAll();
-                });
-
+               canvas.createBoundingBoxAnnotation({
+                    point,
+                    width,
+                    height
+               })
                 canvas.selectTool("cursor")
-                canvas.add(rect)
                 }
-            }
+        }
         canvas.on("mouse:down", this.onMouseDown)
         canvas.on("mouse:move", this.onMouseMove)
 

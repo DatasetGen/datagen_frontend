@@ -1,5 +1,9 @@
 import * as fabric from "fabric";
-import {useEditorCanvasStore} from "./core.ts";
+import {BoundingBoxAnnotation, PolygonAnnotation, useEditorCanvasStore} from "./core.ts";
+import {DatasetLabel} from "../../../../../types";
+import {controlsUtils, Point, Polygon, Rect} from "fabric";
+import {addAlpha} from "../../../../../utils.ts";
+import {v4 as uuidv4} from 'uuid';
 
 export class EditorCanvas extends fabric.Canvas {
     public isDragging = false;
@@ -14,7 +18,7 @@ export class EditorCanvas extends fabric.Canvas {
     public currentTool: EditorTool | undefined = undefined
 
     public initialize(image: string) {
-        const canvasWidth = window.innerWidth - 260;
+        const canvasWidth = window.innerWidth - 300;
         const canvasHeight = window.innerHeight;
         this.preserveObjectStacking = true;
         this.enableRetinaScaling=true;
@@ -118,7 +122,93 @@ export class EditorCanvas extends fabric.Canvas {
         this.renderAll();
     }
 
+    public createPolygonAnnotation(annotation: PolygonAnnotation){
+        const label = useEditorCanvasStore.getState().currentLabel;
+        const polygon = new Polygon(annotation.points.map(x => new Point(x[0], x[1])), {
+            fill: addAlpha(label?.color ?? "", 0.3),
+            strokeWidth: 2,
+            stroke: addAlpha(label?.color ?? "", 1),
+            strokeUniform: true,
+            noScaleCache: true,
+            cornerStyle: 'circle',
+            cornerColor: addAlpha(label?.color ?? "", 1),
+            transparentCorners: false,
+            cornerStrokeColor: addAlpha(label?.color ?? "", 1),
+            borderColor: addAlpha(label?.color ?? "", 1),
+            hasBorders:false,
+            objectCaching: false,
+        });
+        polygon.controls = controlsUtils.createPolyControls(polygon);
+        polygon.on("mouseover", () => {
+            polygon.set({
+                fill: addAlpha(label?.color ?? "", 0.4),
+            });
+            this?.renderAll();
+        });
 
+        polygon.on("mouseout", () => {
+            polygon.set({
+                fill: addAlpha(label?.color ?? "", 0.3),
+            });
+            this?.renderAll();
+        });
+
+        polygon.on("mousewheel", () => {
+            polygon.set({
+                strokeWidth: 3/(this.getZoom()/0.8)
+            })
+        })
+
+        useEditorCanvasStore.getState().addAnnotation({
+            id: uuidv4(),
+            type: "polygon",
+            label: label?.id ?? -1,
+            object: polygon
+        })
+
+        this.add(polygon)
+    }
+
+    public createBoundingBoxAnnotation(annotation: BoundingBoxAnnotation){
+        const label = useEditorCanvasStore.getState().currentLabel;
+        const rect = new Rect({
+            left: annotation.point[0],
+            top: annotation.point[1],
+            stroke: addAlpha(label?.color ?? "", 1.3),
+            strokeWidth: 2,
+            fill: addAlpha(label?.color ?? "", 0.3),
+            width: annotation.width,
+            height: annotation.height,
+            strokeUniform: true,
+            noScaleCache: true,
+            cornerStyle: 'circle',
+            cornerColor: addAlpha(label?.color ?? "", 1),
+            transparentCorners: false,
+            cornerStrokeColor: addAlpha(label?.color ?? "", 1),
+            borderColor: addAlpha(label?.color ?? "", 1),
+        });
+        rect.on("mouseover", () => {
+            rect.set({
+                fill: addAlpha(label?.color ?? "", 0.4),
+            });
+            this?.renderAll();
+        });
+
+        rect.on("mouseout", () => {
+            rect.set({
+                fill: addAlpha(label?.color ?? "", 0.3),
+            });
+            this?.renderAll();
+        });
+
+        this.add(rect)
+        useEditorCanvasStore.getState().addAnnotation({
+            id: uuidv4(),
+            type: "bounding_box",
+            label: label?.id ?? -1,
+            object: rect
+        })
+    }
 }
 
 export interface EditorPlugin{

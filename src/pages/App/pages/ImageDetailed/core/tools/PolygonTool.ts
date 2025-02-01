@@ -103,44 +103,10 @@ export class PolygonTool implements EditorTool {
             }
             if(e.keyCode == 78){
                 if(this.points.length > 2){
-                    const polygon = new Polygon([...this.points], {
-                        fill: "rgba(255, 0, 0, 0.3)",
-                        strokeWidth: 2,
-                        stroke: "rgba(2550, 0,0.8)",
-                        strokeUniform: true,
-                        noScaleCache: true,
-                        cornerStyle: 'circle',
-                        cornerColor: "red",
-                        transparentCorners: false,
-                        cornerStrokeColor: 'red',
-                        borderColor: "red",
-                        hasBorders:false,
-                        objectCaching: false,
-                    });
-                    polygon.controls = controlsUtils.createPolyControls(polygon);
-                polygon.on("mouseover", () => {
-                    polygon.set({
-                        fill: 'rgba(255, 0, 0, 0.4)',
-                    });
-                    canvas?.renderAll();
-                });
-
-                polygon.on("mouseout", () => {
-                    polygon.set({
-                        fill: 'rgba(255, 0, 0, 0.1)',
-                    });
-                    canvas?.renderAll();
-                });
-
-                polygon.on("mousewheel", () => {
-                    polygon.set({
-                        strokeWidth: 2/(canvas.getZoom()/0.8)
+                    canvas.createPolygonAnnotation({
+                        points: this.points.map(x=> [x.x, x.y])
                     })
-                })
-
-
-                canvas.add(polygon)
-                canvas.deselectTool()
+                    canvas.deselectTool()
             }
         }
         }

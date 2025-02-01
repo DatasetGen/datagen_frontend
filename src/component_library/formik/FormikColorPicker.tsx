@@ -1,7 +1,6 @@
 import FormContainer, { FormContainerProps } from "../forms/FormContainer.tsx";
 import {useField} from "formik";
 
-
 const colors = [
     "#E57373",
     "#BA68C8",
@@ -9,6 +8,16 @@ const colors = [
     "#64B5F6",
     "#FFD54F",
     "#A1887F",
+    "#F06292",
+    "#4DB6AC",
+    "#FF8A65",
+    "#7986CB",
+    "#DCE775",
+    "#FFB74D",
+    "#90A4AE",
+    "#9575CD",
+    "#AED581",
+    "#4FC3F7",
 ];
 
 export type FormColorPickerProps = FormContainerProps<HTMLInputElement>
