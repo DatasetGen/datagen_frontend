@@ -31,11 +31,11 @@ const fetchData = async <TResponse>(
 export const createQueryHook = <TResponse>(
     queryKey: unknown[],
     endpoint: string,
-    baseOptions?: UseQueryOptions<TResponse, AxiosError<ApiError>>
+    baseOptions?: Partial<UseQueryOptions<TResponse, AxiosError<ApiError>>>
 ) => {
     return (
         filters: Record<string, unknown> = {},
-        options?: UseQueryOptions<TResponse, AxiosError<ApiError>>
+        options?: Partial<UseQueryOptions<TResponse, AxiosError<ApiError>>>
     ) => {
         return useQuery<TResponse, AxiosError<ApiError>>({
             queryKey: [...queryKey, filters],

@@ -1,9 +1,9 @@
 import * as fabric from "fabric";
-import {BoundingBoxAnnotation, PolygonAnnotation, useEditorCanvasStore} from "./core.ts";
-import {DatasetLabel} from "../../../../../types";
-import {controlsUtils, Point, Polygon, Rect} from "fabric";
-import {addAlpha} from "../../../../../utils.ts";
-import {v4 as uuidv4} from 'uuid';
+import { useEditorCanvasStore} from "./core.ts";
+import { BoundingBoxAnnotator} from "./annotators/BoundingBoxAnnotator.tsx";
+import { PolygonAnnotator} from "./annotators/PolygonAnnotator.tsx";
+import {Annotation, Annotator, InputAnnotation} from "./annotators/types.ts";
+import {CursorTool} from "./tools/CursorTool.ts";
 
 export class EditorCanvas extends fabric.Canvas {
     public isDragging = false;
@@ -12,28 +12,42 @@ export class EditorCanvas extends fabric.Canvas {
     public canPan = true;
     public canZoom = true;
     public _canEditElements = true;
-    public tools: EditorTool[] = []
     public plugins: EditorPlugin[] = []
     public prevTool: EditorTool | undefined = undefined
     public currentTool: EditorTool | undefined = undefined
 
-    public initialize(image: string) {
+    public async initialize(image: string) {
+        this.fireRightClick= true
+        this.fireMiddleClick= true
+        this.stopContextMenu = true
         const canvasWidth = window.innerWidth - 300;
         const canvasHeight = window.innerHeight;
         this.preserveObjectStacking = true;
         this.enableRetinaScaling=true;
         this.uniformScaling=false
+        const img = await fabric.Image.fromURL(image);
+        const scale = Math.min(canvasWidth / img.width, canvasHeight / img.height);
+        img.scale(scale)
+        this.backgroundImage = img
+        this.zoomToPoint(
+            new fabric.Point(this.width / 2, this.height / 2),
+            0.8
+        );
+        this.renderAll()
+    }
 
-        fabric.Image.fromURL(image).then((img) => {
-            const scale = Math.min(canvasWidth / img.width, canvasHeight / img.height);
-            img.scale(scale)
-            this.backgroundImage = img
-            this.zoomToPoint(
-                new fabric.Point(this.width / 2, this.height / 2),
-                0.8
-            );
-            this.renderAll()
-        })
+    public denormalizeCoords(x : number, y: number) : [number, number]{
+        if(!this.backgroundImage) return [0, 0]
+        const width = this.backgroundImage?.width * this.backgroundImage?.scaleX;
+        const height = this.backgroundImage?.height * this.backgroundImage?.scaleY;
+        return [x*width, y*height]
+    }
+
+    public normalizeCoords(x : number, y: number) : [number, number]{
+        if(!this.backgroundImage) return [0, 0]
+        const width = this.backgroundImage?.width * this.backgroundImage?.scaleX;
+        const height = this.backgroundImage?.height * this.backgroundImage?.scaleY;
+        return [x/width, y/height]
     }
 
     public addPlugin(plugin : EditorPlugin){
@@ -41,24 +55,19 @@ export class EditorCanvas extends fabric.Canvas {
         plugin.plug(this)
     }
 
-    public addTool(tool : EditorTool){
-        this.tools.push(tool);
-    }
-
-    public selectTool(name : string){
+    public selectTool(nextTool : EditorTool){
         this.prevTool = this.currentTool;
-        const nextTool = this.tools.find(x => x.name === name);
         this.plugins.forEach(plugin => plugin.unplug(this))
         this.currentTool?.onDeselect(this, nextTool)
         nextTool?.onSelect(this, this.currentTool)
         this.currentTool = nextTool;
         this.plugins.forEach(plugin => plugin.plug(this))
         useEditorCanvasStore.setState({
-            currentTool: name
+            currentTool: nextTool.name
         })
     }
     public deselectTool(){
-        this.selectTool("cursor")
+        this.selectTool(new CursorTool())
     }
 
     public disableInteraction(){
@@ -122,93 +131,30 @@ export class EditorCanvas extends fabric.Canvas {
         this.renderAll();
     }
 
-    public createPolygonAnnotation(annotation: PolygonAnnotation){
-        const label = useEditorCanvasStore.getState().currentLabel;
-        const polygon = new Polygon(annotation.points.map(x => new Point(x[0], x[1])), {
-            fill: addAlpha(label?.color ?? "", 0.3),
-            strokeWidth: 2,
-            stroke: addAlpha(label?.color ?? "", 1),
-            strokeUniform: true,
-            noScaleCache: true,
-            cornerStyle: 'circle',
-            cornerColor: addAlpha(label?.color ?? "", 1),
-            transparentCorners: false,
-            cornerStrokeColor: addAlpha(label?.color ?? "", 1),
-            borderColor: addAlpha(label?.color ?? "", 1),
-            hasBorders:false,
-            objectCaching: false,
-        });
-        polygon.controls = controlsUtils.createPolyControls(polygon);
-        polygon.on("mouseover", () => {
-            polygon.set({
-                fill: addAlpha(label?.color ?? "", 0.4),
-            });
-            this?.renderAll();
-        });
+    public addAnnotation<T>(annotation: InputAnnotation<T>){
+        const annotators = this.getAnnotators();
+        const annotator =annotators[annotation.type] as Annotator<T>
+        const importedAnnotation = annotator.loadAnnotation(annotation)
+        useEditorCanvasStore.getState().addAnnotation(importedAnnotation)
 
-        polygon.on("mouseout", () => {
-            polygon.set({
-                fill: addAlpha(label?.color ?? "", 0.3),
-            });
-            this?.renderAll();
-        });
-
-        polygon.on("mousewheel", () => {
-            polygon.set({
-                strokeWidth: 3/(this.getZoom()/0.8)
-            })
-        })
-
-        useEditorCanvasStore.getState().addAnnotation({
-            id: uuidv4(),
-            type: "polygon",
-            label: label?.id ?? -1,
-            object: polygon
-        })
-
-        this.add(polygon)
     }
 
-    public createBoundingBoxAnnotation(annotation: BoundingBoxAnnotation){
-        const label = useEditorCanvasStore.getState().currentLabel;
-        const rect = new Rect({
-            left: annotation.point[0],
-            top: annotation.point[1],
-            stroke: addAlpha(label?.color ?? "", 1.3),
-            strokeWidth: 2,
-            fill: addAlpha(label?.color ?? "", 0.3),
-            width: annotation.width,
-            height: annotation.height,
-            strokeUniform: true,
-            noScaleCache: true,
-            cornerStyle: 'circle',
-            cornerColor: addAlpha(label?.color ?? "", 1),
-            transparentCorners: false,
-            cornerStrokeColor: addAlpha(label?.color ?? "", 1),
-            borderColor: addAlpha(label?.color ?? "", 1),
-        });
-        rect.on("mouseover", () => {
-            rect.set({
-                fill: addAlpha(label?.color ?? "", 0.4),
-            });
-            this?.renderAll();
-        });
+    private getAnnotators() {
+        const annotators: Record<string, Annotator<any>> = {
+            "bounding_box": new BoundingBoxAnnotator(this),
+            "polygon": new PolygonAnnotator(this)
+        }
+        return annotators;
+    }
 
-        rect.on("mouseout", () => {
-            rect.set({
-                fill: addAlpha(label?.color ?? "", 0.3),
-            });
-            this?.renderAll();
-        });
-
-        this.add(rect)
-        useEditorCanvasStore.getState().addAnnotation({
-            id: uuidv4(),
-            type: "bounding_box",
-            label: label?.id ?? -1,
-            object: rect
+    public exportAnnotations(annotations: Annotation[]) {
+        const annotators= this.getAnnotators();
+        return annotations.map(x => {
+            const annotator = annotators[x.type]
+            return annotator.annotationToJson(x)
         })
     }
+
 }
 
 export interface EditorPlugin{

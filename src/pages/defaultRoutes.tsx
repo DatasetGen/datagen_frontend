@@ -15,6 +15,8 @@ import React from "react";
 import {useAuth} from "../api/auth/useAuth.ts";
 import DatasetHomePage from "./App/pages/DatasetDetailed/pages/Home/DatasetHomePage.tsx";
 import ImageDetailedPage from "./App/pages/ImageDetailed/ImageDetailedPage.tsx";
+import DatasetJobs from "./App/pages/DatasetDetailed/pages/Jobs/DatasetJobs.tsx";
+import DatasetJobsDetailed from "./App/pages/DatasetDetailed/pages/Jobs/DatasetJobsDetailed.tsx";
 
 const OnlyAuthenticated = ({ children }: {children : React.ReactNode}) => {
     const { data, isLoading, isError } = useAuth();
@@ -52,6 +54,9 @@ function DefaultRoutes() {
                     <Route path="dataset_general" element={<DatasetHomePage/>}></Route>
                     <Route path="dataset_configuration" element={<DatasetConfigurationPage/>}></Route>
                     <Route path="dataset_data" element={<DatasetDataPage/>}></Route>
+                    <Route path="dataset_jobs" element={<DatasetJobs/>}>
+                        <Route path=":job_category_id" element={<DatasetJobsDetailed/>}/>
+                    </Route>
                 </Route>
                 <Route path="configuration" element={<ConfigurationPage/>}>
                 </Route>

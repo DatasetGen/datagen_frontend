@@ -6,6 +6,8 @@ import {BiPhotoAlbum, BiSolidFile, BiSolidImage} from "react-icons/bi";
 import Button from "../component_library/forms/Button.tsx";
 import {IconType} from "react-icons";
 import {useNavigate} from "react-router";
+import PreviewImage from "./PreviewImage.tsx";
+import {useRef} from "react";
 
 
 
@@ -16,6 +18,7 @@ interface DatasetCardProps {
 const DatasetCard = ({ dataset }: DatasetCardProps) => {
     const numberOfLabelsToShow = 3;
     const navigate = useNavigate();
+    const ref = useRef<HTMLDivElement>(null)
 
     const renderInfo = (Icon:  IconType, value: string, label?: string) => (
         <div  className="p-1 py-1 text-xs rounded-lg font-semibold flex items-center gap-2 text-gray-700">
@@ -25,18 +28,20 @@ const DatasetCard = ({ dataset }: DatasetCardProps) => {
     );
 
     return (
-        <div onClick={() => navigate(dataset.id)} className="w-full border-4 border-gray-100 bg-gray-100 rounded-xl  relative overflow-hidden  cursor-pointer">
-            <div className="grid grid-cols-1">
-                {
-                    dataset.thumbnail ?
-                        <img className="h-[170px] w-full object-cover" src={dataset.thumbnail}/>
-                        :
-                        <div className="h-[170px] w-full object-cover bg-gray-300 flex justify-center items-center gap-4 font-semibold text-gray-500">
-                            <BiPhotoAlbum size={40}></BiPhotoAlbum>
-                            <h1>No images</h1>
-                        </div>
+        <div  onClick={() => navigate(dataset.id)} className="w-full border-4 border-gray-100 bg-gray-100 rounded-xl  relative overflow-hidden  cursor-pointer">
+            <div className="grid grid-cols-1 " >
+                <div ref={ref} className="w-full h-[180px]">
+                    {
+                        dataset.thumbnail ?
+                            <PreviewImage image={dataset.thumbnail} parentRef={ref}></PreviewImage>
+                            :
+                            <div className="h-[170px] w-full object-cover bg-gray-300 flex justify-center items-center gap-4 font-semibold text-gray-500">
+                                <BiPhotoAlbum size={40}></BiPhotoAlbum>
+                                <h1>No images</h1>
+                            </div>
 
-                }
+                    }
+                </div>
                 <div className="flex flex-col justify-center p-6">
                     <Title size="sm">{dataset.name}</Title>
                     <Paragraph colorSchema="secondary" size="sm">

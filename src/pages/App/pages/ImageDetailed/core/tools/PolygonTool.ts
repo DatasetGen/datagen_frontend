@@ -1,5 +1,7 @@
 import {EditorCanvas, EditorTool} from "../EditorCanvas.ts";
-import {Line, Point, Rect, TPointerEventInfo, Object, Circle, Polygon, controlsUtils} from "fabric";
+import { TPointerEventInfo, Object, Circle, Polygon } from "fabric";
+import {v4 as uuidv4} from "uuid";
+import {DatasetLabel} from "../../../../../../types";
 
 export class PolygonTool implements EditorTool {
     public name = "polygon"
@@ -13,6 +15,8 @@ export class PolygonTool implements EditorTool {
     private circles : Circle[] = []
     private polygon : Polygon | null = null;
 
+    constructor(public readonly label : DatasetLabel) {
+    }
 
     onSelect(canvas: EditorCanvas, prevTool?: EditorTool){
         this.points = []
@@ -39,7 +43,6 @@ export class PolygonTool implements EditorTool {
         this.polygon = polygon
 
         this.onMouseMove = (opt) => {
-            console.log(this.points)
             polygon.set({ points: [...this.points, {x:opt.scenePoint.x, y:opt.scenePoint.y}]});
             polygon.setCoords()
             polygon.setDimensions()
@@ -48,30 +51,36 @@ export class PolygonTool implements EditorTool {
         };
 
         this.onMouseDown = (opt) => {
-            this.points.push({x: opt.scenePoint.x, y: opt.scenePoint.y});
-            const rad = 6/canvas.getZoom()
-            const stroke = 3/canvas.getZoom()
-            const circle = new Circle({
-                radius: rad,
-                fill: 'gray',
-                stroke:"black",
-                strokeWidth: stroke,
-                left: opt.scenePoint.x - rad,
-                top: opt.scenePoint.y - rad,
-                selectable: false,
-                evented:false,
-                originalPosition: opt.scenePoint
-            });
-            circle.set({
-                originalX: opt.scenePoint.x,
-                originalY: opt.scenePoint.y,
-            });
+            if(opt.e.button === 0){
+                this.points.push({x: opt.scenePoint.x, y: opt.scenePoint.y});
+                const rad = 6/canvas.getZoom()
+                const stroke = 3/canvas.getZoom()
+                const circle = new Circle({
+                    radius: rad,
+                    fill: 'gray',
+                    stroke:"black",
+                    strokeWidth: stroke,
+                    left: opt.scenePoint.x - rad,
+                    top: opt.scenePoint.y - rad,
+                    selectable: false,
+                    evented:false,
+                    originalPosition: opt.scenePoint
+                });
+                circle.set({
+                    originalX: opt.scenePoint.x,
+                    originalY: opt.scenePoint.y,
+                });
 
-            this.circles.push(circle)
-            this.createdElements.push(circle)
-            this.onWheel(null)
-            polygon.setCoords()
-            canvas.add(circle)
+                this.circles.push(circle)
+                this.createdElements.push(circle)
+                this.onWheel(null)
+                polygon.setCoords()
+                canvas.add(circle)
+            }
+            if(opt.e.button === 2){
+                this.points.pop()
+                canvas.remove(this.circles.pop())
+            }
 
         }
         this.onWheel = () => {
@@ -103,8 +112,16 @@ export class PolygonTool implements EditorTool {
             }
             if(e.keyCode == 78){
                 if(this.points.length > 2){
-                    canvas.createPolygonAnnotation({
-                        points: this.points.map(x=> [x.x, x.y])
+                    const point = canvas.normalizeCoords(polygon.left, polygon.top)
+                    canvas.addAnnotation({
+                        id: uuidv4(),
+                        type: "polygon",
+                        label: this.label,
+                        data: {
+                            left:point[0],
+                            top: point[1],
+                            points: this.points.map(x=> canvas.normalizeCoords(x.x, x.y))
+                        }
                     })
                     canvas.deselectTool()
             }
@@ -116,7 +133,6 @@ export class PolygonTool implements EditorTool {
     };
 
     onDeselect(canvas: EditorCanvas, nextTool?: EditorTool){
-        console.log("hello here im ai")
         canvas.canPan = this.stack.pop();
         canvas.canZoom = this.stack.pop();
         canvas._canEditElements = this.stack.pop()

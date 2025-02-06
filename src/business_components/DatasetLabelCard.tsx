@@ -1,9 +1,9 @@
 import React from 'react';
 import {DatasetLabel} from "../types";
-import {IoMdClose, IoMdPricetag} from "react-icons/io";
+import { IoMdPricetag} from "react-icons/io";
 import FormIconButton from "../component_library/forms/FormIconButton.tsx";
 import OptionMenu from "../component_library/utils/OptionMenu.tsx";
-import {BiDotsHorizontal, BiDotsVertical, BiTrash} from "react-icons/bi";
+import { BiDotsVertical, BiTrash} from "react-icons/bi";
 import DeleteDialog from "../component_library/dialogs/DeleteDialog.tsx";
 import {useDialog} from "@ark-ui/react";
 import {useRemoveDatasetLabel} from "../api/app/datasets.ts";

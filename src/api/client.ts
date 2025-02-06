@@ -19,10 +19,6 @@ apiClient.interceptors.request.use(
 export const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
-            refetchOnMount: false,
-            refetchOnReconnect: false,
-            refetchOnWindowFocus: false,
-            refetchIntervalInBackground: false,
         },
     },
 });

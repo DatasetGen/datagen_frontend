@@ -1,14 +1,15 @@
 import * as fabric from "fabric";
 import {EditorCanvas, EditorPlugin} from "../EditorCanvas.ts";
+import {TPointerEventInfo} from "fabric";
 
 export class ZoomPlugin implements EditorPlugin{
     public name: string = "zoom"
-    public zoom: (opt: any) => void;
+    public zoom: (opt: TPointerEventInfo<WheelEvent>) => void = () => {};
 
     plug(canvas: EditorCanvas){
         this.zoom = (opt) => {
             if(!canvas.canZoom) return;
-            let delta = opt.e.deltaY;
+            const delta = opt.e.deltaY;
             let zoom = canvas.getZoom();
             zoom *= 0.999 ** delta;
             if (zoom > 20) zoom = 20;

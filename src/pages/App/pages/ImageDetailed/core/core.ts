@@ -3,38 +3,15 @@ import {EditorCanvas} from "./EditorCanvas.ts";
 import {PanningPlugin} from "./plugins/PanningPlugin.ts";
 import {ZoomPlugin} from "./plugins/ZoomPlugin.ts";
 import {CursorTool} from "./tools/CursorTool.ts";
-import {MoveTool} from "./tools/MoveTool.ts";
-import {BoundingBoxTool} from "./tools/BoundingBoxTool.ts";
-import {PolygonTool} from "./tools/PolygonTool.ts";
-import {Object} from "fabric";
 import {DatasetLabel} from "../../../../../types";
-
-export interface Annotation{
-    id: string;
-    type: string;
-    label: number;
-    object: Object;
-}
-
-export interface BoundingBoxAnnotation{
-    point : number[],
-    width: number,
-    height: number
-}
-
-export interface PolygonAnnotation{
-    points: number[][]
-}
-
+import {Annotation, Annotator, InputAnnotation} from "./annotators/types.ts";
 
 interface EditorCanvasStore {
     annotations: Annotation[]
     addAnnotation(annotation: Annotation): void;
     canvasInstance: EditorCanvas | null;
-    setCanvasInstance: (image: string) => void;
-    setLabel: (label: DatasetLabel) => void;
+    setCanvasInstance: (image: string, annotations: InputAnnotation<any>[]) => void;
     currentTool: string | undefined,
-    currentLabel: DatasetLabel | undefined,
     deleteAnnotation: (annotation: string) => void;
     changeAnnotationLabel: (label: DatasetLabel, annotation: string) => void;
 }
@@ -48,26 +25,18 @@ export const useEditorCanvasStore = create<EditorCanvasStore>((set) => ({
         }))
     },
     canvasInstance: null,
-    currentLabel: undefined,
-    setLabel: (label : DatasetLabel) => {
-        set({
-            currentLabel: label
-        })
-    },
-    setCanvasInstance: (image) => {
+    setCanvasInstance: async (image, annotations: InputAnnotation<any>[]) => {
+        set((state)=>({
+            annotations: []
+        }))
+        const editor = new EditorCanvas("principal_canvas")
+        editor.addPlugin(new PanningPlugin())
+        editor.addPlugin(new ZoomPlugin())
+        await editor.initialize(image);
+        editor.selectTool(new CursorTool())
+        annotations.forEach(annotation => editor.addAnnotation(annotation))
         set((state) => {
-
-            if(state.canvasInstance) state.canvasInstance.destroy()
-            const editor = new EditorCanvas("principal_canvas")
-            editor.addPlugin(new PanningPlugin())
-            editor.addPlugin(new ZoomPlugin())
-            editor.initialize(image);
-            editor.addTool(new CursorTool())
-            editor.addTool(new MoveTool())
-            editor.addTool(new BoundingBoxTool())
-            editor.addTool(new PolygonTool())
-            editor.selectTool("cursor")
-            return { canvasInstance: editor, currentLabel: undefined, annotations: [] };
+            return { canvasInstance: editor, currentLabel: undefined };
         });
     },
     deleteAnnotation: (id: string) => {
@@ -80,46 +49,8 @@ export const useEditorCanvasStore = create<EditorCanvasStore>((set) => ({
         })
     },
     changeAnnotationLabel: (label: DatasetLabel, annotation: string) => {
-
     },
     currentTool: undefined
 }));
 
 export const useCanvasInstance = () => useEditorCanvasStore(state => state.canvasInstance)
-
-/*
-MoveTool.tsconst rect = new fabric.Rect({
-                    left: 0,
-                    top: 0,
-                    stroke: "red",
-                    strokeWidth: 1,
-                    fill: 'rgba(255, 0, 0, 0.1)',
-                    width: 300,
-                    height: 300,
-                    strokeUniform: true,
-                    noScaleCache: true,
-                    cornerStyle: 'circle',
-                    cornerColor: "red",
-                    transparentCorners: false,
-                    cornerStrokeColor: 'red',
-                    borderColor: "red"
-                });
-                if(editor.canvasInstance) {
-                    rect.on("mouseover", () => {
-                        rect.set({
-                            fill: 'rgba(255, 0, 0, 0.4)',
-                        });
-                        editor?.canvasInstance?.renderAll();
-                    });
-
-                    rect.on("mouseout", () => {
-                        rect.set({
-                            fill: 'rgba(255, 0, 0, 0.1)',
-                        });
-                        editor?.canvasInstance?.renderAll();
-                    });
-
-                    editor.canvasInstance.add(rect)
-                }
- */
-

@@ -22,6 +22,11 @@ const elements = [
         pathname: "dataset_data"
     },
     {
+        name: "Labeling",
+        url : "dataset_jobs",
+        pathname: "dataset_jobs"
+    },
+    {
         name: "Configuration",
         url: "dataset_configuration",
         pathname: "dataset_configuration"

@@ -1,17 +1,16 @@
 import React, { useEffect, useRef } from 'react';
-import { DatasetImage } from "../../../../../types";
 import EditorHeader from "./EditorHeader.tsx";
-import EditorSidebar from "./EditorSidebar.tsx";
+import EditorSidebar from "./EditorSidebar/EditorSidebar.tsx";
 import EditorZoomBar from "./EditorZoomBar.tsx";
-import EditorToolBar from "./EditorToolBar.tsx";
+import EditorToolBar from "./EditorToolBar/EditorToolBar.tsx";
 import {useEditorCanvasStore} from "../core/core.ts";
-import * as fabrik from 'fabric';
+import {Annotation, InputAnnotation} from "../core/annotators/types.ts";
 
-function Editor({ image }: { image: string }) {
+function Editor({ image, annotations }: { image: string, annotations: InputAnnotation<any>[] }) {
     const {setCanvasInstance} = useEditorCanvasStore()
 
     useEffect(() => {
-        setCanvasInstance(image)
+        setCanvasInstance(image, annotations)
     }, []);
 
 

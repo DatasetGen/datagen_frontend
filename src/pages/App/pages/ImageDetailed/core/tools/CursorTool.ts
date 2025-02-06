@@ -18,7 +18,7 @@ export class CursorTool implements EditorTool {
     onDeselect(canvas: EditorCanvas, nextTool?: EditorTool){
         canvas.canPan = this.stack.pop();
         canvas.canZoom = this.stack.pop();
-        canvas._canEditElements = this.stack.pop()
+        canvas._canEditElements = false
     };
 
 }

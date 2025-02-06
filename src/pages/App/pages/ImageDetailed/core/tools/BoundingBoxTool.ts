@@ -1,5 +1,7 @@
 import {EditorCanvas, EditorTool} from "../EditorCanvas.ts";
 import {Line, Point, Rect, TPointerEventInfo, Object} from "fabric";
+import {v4 as uuidv4} from "uuid";
+import {DatasetLabel} from "../../../../../../types";
 
 export class BoundingBoxTool implements EditorTool {
     public name = "bounding_box"
@@ -10,6 +12,8 @@ export class BoundingBoxTool implements EditorTool {
     private onKeyDown: (opt: KeyboardEvent) => void = () => {};
     private createdElements : Object[] = []
 
+    constructor(public readonly label : DatasetLabel) {
+    }
 
     onSelect(canvas: EditorCanvas, prevTool?: EditorTool){
         this.points = []
@@ -26,6 +30,7 @@ export class BoundingBoxTool implements EditorTool {
                 canvas.deselectTool()
             }
         }
+
         window.addEventListener("keydown", this.onKeyDown)
 
         const verticalLine = new Line([-50000, 0, 50000, 0], {
@@ -94,33 +99,40 @@ export class BoundingBoxTool implements EditorTool {
         };
 
         this.onMouseDown = (opt) => {
+            if(opt.e.button !== 0) return;
             this.points.push(new Point(opt.scenePoint.x, opt.scenePoint.y))
-            console.log(this.points)
             if(this.points.length == 2){
                 const x1 = this.points[this.points[0].x <this.points[1].x ? 0 : 1].x
                 const x2 = this.points[this.points[0].x <this.points[1].x ? 1 : 0].x
                 const y1 = this.points[this.points[0].y <this.points[1].y ? 0 : 1].y
                 const y2 = this.points[this.points[0].y <this.points[1].y ? 1 : 0].y
+                const point = canvas.normalizeCoords(x1, y1);
+                const size = canvas.normalizeCoords(x2-x1, y2-y1)
 
-                const point = [x1, y1]
-                const width = x2 - x1
-                const height = y2 - y1
-
-               canvas.createBoundingBoxAnnotation({
-                    point,
-                    width,
-                    height
+               canvas.addAnnotation({
+                   id: uuidv4(),
+                   type: "bounding_box",
+                   label: this.label,
+                   data: {
+                       point,
+                       width: size[0],
+                       height: size[1]
+                   }
                })
-                canvas.selectTool("cursor")
-                }
+              canvas.deselectTool()
+            }
         }
-        canvas.on("mouse:down", this.onMouseDown)
+
+        canvas.upperCanvasEl.setAttribute("tabindex", "0");
+        canvas.upperCanvasEl.focus();
+        canvas.renderAll()
+
         canvas.on("mouse:move", this.onMouseMove)
+        canvas.on("mouse:down", this.onMouseDown)
 
     };
 
     onDeselect(canvas: EditorCanvas, nextTool?: EditorTool){
-        console.log("hello here im ai")
         canvas.canPan = this.stack.pop();
         canvas.canZoom = this.stack.pop();
         canvas._canEditElements = this.stack.pop()

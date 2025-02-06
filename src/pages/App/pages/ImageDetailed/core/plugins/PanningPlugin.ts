@@ -1,4 +1,4 @@
-import {EditorCanvas, EditorPlugin, EditorTool} from "../EditorCanvas.ts";
+import {EditorCanvas, EditorPlugin } from "../EditorCanvas.ts";
 import {TPointerEventInfo} from "fabric";
 
 
@@ -13,7 +13,8 @@ export class PanningPlugin implements EditorPlugin{
 
     plug(canvas: EditorCanvas){
         this.mouseDown= (opt: TPointerEventInfo<MouseEvent>) => {
-            if(!canvas.canPan ) return;
+            if(!canvas.canPan  && opt.e.button === 0) return;
+            if(opt.e.button === 2) return;
             const evt = opt.e;
             console.log(opt.e.button)
             if (opt.target) return;
