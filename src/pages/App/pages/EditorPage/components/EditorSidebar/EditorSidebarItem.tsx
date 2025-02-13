@@ -16,6 +16,7 @@ import FormInput from "../../../../../../component_library/forms/FormInput.tsx";
 import * as dg from "@ark-ui/react/dialog";
 import Button from "../../../../../../component_library/forms/Button.tsx";
 import FormikButton from "../../../../../../component_library/formik/FormikButton.tsx";
+import FetchLayout from "../../../../../../component_library/layouts/FetchLayout";
 
 const icon = {
     "bounding_box": {
@@ -35,12 +36,11 @@ export default function EditorSidebarElement({annotation}: {annotation: Annotati
     const {data, status} = useDatasetLabels(parseInt(dataset_id ?? ""))()
     const dialog = useDialog();
 
-    if(status === "pending") return <div>loading...</div>
     const currLabel = data?.results.find(x => x.id == annotation.label)
 
 
     return (
-        <>
+        <FetchLayout status={status}>
             <Dialog size="lg" dialog={dialog} title="Generar o sustituir objeto">
                 <Form  initialValues={{prompt: "", negative_prompt: ""}} onSubmit={() => {
                 }} className="grid gap-3">
@@ -109,7 +109,7 @@ export default function EditorSidebarElement({annotation}: {annotation: Annotati
                     {annotation.id}
                 </div>
             </div>
-        </>
+        </FetchLayout>
     )
 
 }

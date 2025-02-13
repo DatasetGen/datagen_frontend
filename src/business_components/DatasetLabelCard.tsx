@@ -1,4 +1,3 @@
-import React from 'react';
 import {DatasetLabel} from "../types";
 import { IoMdPricetag} from "react-icons/io";
 import FormIconButton from "../component_library/forms/FormIconButton.tsx";
@@ -30,9 +29,9 @@ function DatasetLabelCard({label} : DatasetLabelCardProps) {
     return (
         <>
         <DeleteDialog callback={async () => {await mutateAsync({})}} dialog={deleteDialog}></DeleteDialog>
-        <div key={label.id} className="px-2 py-1 bg-gray-100 border-2 rounded-xl flex items-center gap-7 text-gray-500 font-semibold">
+        <div key={label.id} className="px-2 bg-gray-100 border-2 rounded-xl flex items-center gap-7 text-gray-500 font-semibold">
             <div className="flex items-center gap-2">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 text-sm">
                     <IoMdPricetag color={label?.color}></IoMdPricetag>
                     {label.name}
 

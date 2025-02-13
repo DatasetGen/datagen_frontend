@@ -17,7 +17,7 @@ function MenuButton({items, ...props} : FormMenuButtonProps) {
                 <Button {...props}></Button>
             </Menu.Trigger>
             <Menu.Positioner>
-                <Menu.Content  className="shadow-[3px_4px_38px_0px_rgba(0,_0,_0,_0.06)] outline-0 bg-white p-3 min-w-[230px] rounded-xl text-gray-700 z-30">
+                <Menu.Content  className="z-20 shadow-[3px_4px_38px_0px_rgba(0,_0,_0,_0.06)] outline-0 bg-white p-3 min-w-[230px] rounded-xl text-gray-700 z-30">
                     {
                        items?.map(item => (
                            <div key={item.title} onClick={() => item.callback()}>

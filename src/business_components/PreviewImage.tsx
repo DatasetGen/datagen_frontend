@@ -1,6 +1,6 @@
-import React, {MutableRefObject, RefObject, useEffect, useRef} from 'react';
+import React, { RefObject, useEffect, useRef} from 'react';
 import * as fabric from "fabric";
-import {EditorCanvas} from "../pages/App/pages/ImageDetailed/core/EditorCanvas.ts";
+import {EditorCanvas} from "../pages/App/pages/EditorPage/core/EditorCanvas.ts";
 import {DatasetImage} from "../types";
 
 interface Props{

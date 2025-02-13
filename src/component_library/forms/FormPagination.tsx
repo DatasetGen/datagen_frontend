@@ -17,10 +17,10 @@ const paginationStyles = tv({
     },
     variants: {
         size: {
-            sm: { button: "h-8 w-8 text-sm", activePage: "text-sm", inactivePage: "text-sm", container: "p-1" },
-            md: { button: "h-10 w-10 text-base", activePage: "text-base", inactivePage: "text-base" },
-            lg: { button: "h-11 w-11 text-lg", activePage: "text-lg", inactivePage: "text-lg" },
-            xl: { button: "h-12 w-12 text-lg", activePage: "text-lg", inactivePage: "text-lg" },
+            sm: { button: "h-7 w-7 text-sm", activePage: "text-xs", inactivePage: "text-xs", container: "p-1" },
+            md: { button: "h-8 w-8 text-sm", activePage: "text-sm", inactivePage: "text-sm" },
+            lg: { button: "h-9 w-9 text-sm", activePage: "text-sm", inactivePage: "text-sm" },
+            xl: { button: "h-10 w-10 text-base", activePage: "text-bae", inactivePage: "text-base" },
         },
         colorSchema: {
             brand_primary: {

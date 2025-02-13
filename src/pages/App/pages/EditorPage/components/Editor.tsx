@@ -1,18 +1,17 @@
-import React, { useEffect, useRef } from 'react';
-import EditorHeader from "./EditorHeader.tsx";
+import React, { useEffect } from 'react';
+import EditorHeader from "./EditorHeader/EditorHeader.tsx";
 import EditorSidebar from "./EditorSidebar/EditorSidebar.tsx";
 import EditorZoomBar from "./EditorZoomBar.tsx";
 import EditorToolBar from "./EditorToolBar/EditorToolBar.tsx";
 import {useEditorCanvasStore} from "../core/core.ts";
-import {Annotation, InputAnnotation} from "../core/annotators/types.ts";
+import {DatasetImage} from "../../../../../types";
 
-function Editor({ image, annotations }: { image: string, annotations: InputAnnotation<any>[] }) {
-    const {setCanvasInstance} = useEditorCanvasStore()
+function Editor({ image }: { image: DatasetImage }) {
+    const { setCanvasInstance, canvasInstance } = useEditorCanvasStore()
 
     useEffect(() => {
-        setCanvasInstance(image, annotations)
-    }, []);
-
+        setCanvasInstance(image)
+    }, [image]);
 
     return (
         <div className="h-[100vh] bg-gray-200 overflow-hidden">
@@ -30,8 +29,7 @@ function Editor({ image, annotations }: { image: string, annotations: InputAnnot
                 />
             </div>
         </div>
-    )
-    ;
+    );
 }
 
 export default Editor;

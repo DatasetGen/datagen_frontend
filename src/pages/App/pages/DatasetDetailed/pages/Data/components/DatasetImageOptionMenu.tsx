@@ -30,6 +30,8 @@ function DatasetOptionMenu({image, children}: Props) {
         <>
             <DeleteDialog dialog={dialog} callback={async () => await mutateAsync({})}></DeleteDialog>
             <OptionMenuContainer
+                size="sm"
+                buttonSize="sm"
                 iconProps={{colorSchema: "secondary"}}
                 items={[
                 {

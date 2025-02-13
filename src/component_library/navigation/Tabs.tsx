@@ -41,7 +41,7 @@ const tabNavigationStyle = tv({
             secondary: {}
         },
         size: {
-            sm: { container: "text-sm" },
+            sm: { container: "text-xs" },
             md: { container: "text-base" },
             lg: { container: "text-lg" },
             xl: { container: "text-xl" },

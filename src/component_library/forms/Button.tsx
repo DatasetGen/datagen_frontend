@@ -3,13 +3,12 @@ import {tv} from "tailwind-variants";
 import {StyleSystemProps} from "../types.ts";
 import Spinner from "../utils/Spinner.tsx";
 
-
 const styles = tv({
     base: "transition-all rounded-lg font-semibold w-full flex justify-center items-center gap-2",
     variants: {
         "size" : {
-            "sm": "px-2 py-1 text-sm",
-            "md": "p-2 text-sm",
+            "sm": "px-3 py-2 text-xs",
+            "md": "p-2 text-xs px-4 py-3",
             "lg": "p-3 text-sm",
             "xl": "p-4",
         },
@@ -26,6 +25,18 @@ const styles = tv({
         "danger": {
             true: "bg-red-500 hover:!bg-red-600 text-white",
             false: ""
+        },
+        "success": {
+            true: "bg-green-500 hover:bg-green-600 active:bg-green-400 text-white",
+            false: ""
+        },
+        "warning": {
+            true: "bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-400 text-black",
+            false: ""
+        },
+        "information": {
+            true: "bg-blue-500 hover:bg-blue-600 active:bg-blue-400 text-white",
+            false: ""
         }
     },
     defaultVariants: {
@@ -35,14 +46,17 @@ const styles = tv({
 })
 
 export interface ButtonProps extends StyleSystemProps, Omit<DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, "size">{
-    loading?:boolean,
-    disabled ?: boolean,
+    loading?: boolean,
+    disabled?: boolean,
     danger?: boolean,
+    success?: boolean,
+    warning?: boolean,
+    information?: boolean,
 }
 
-function Button({size, loading, colorSchema, children, disabled, danger, ...props}: ButtonProps) {
+function Button({size, loading, colorSchema, children, disabled, danger, success, warning, information, ...props}: ButtonProps) {
     return (
-        <button {...props} className={styles({size, colorSchema, disabled, danger})} >
+        <button {...props} className={styles({size, colorSchema, disabled, danger, success, warning, information})} >
             {loading && <Spinner size={size} colorSchema={colorSchema} disabled={disabled} danger={danger}></Spinner>}
             {children}
         </button>

@@ -3,7 +3,7 @@ import * as arc from '@ark-ui/react';
 import FormIconButton, { IconButtonProps } from "../forms/FormIconButton.tsx";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { tv } from 'tailwind-variants';
-import {useMenu, UseMenuProps, UseMenuReturn} from "@ark-ui/react";
+import { UseMenuProps} from "@ark-ui/react";
 
 const menuSize = tv({
     base: "rounded-lg flex items-center gap-3 w-full p-3 py-1 box-border font-semibold cursor-pointer",
@@ -44,8 +44,8 @@ function OptionMenu({ children, items, size = "md", menuProps  }: EntityMenuProp
             <arc.Menu.Trigger onClick={(e) => e.stopPropagation()} asChild>
                 {children}
             </arc.Menu.Trigger>
-            <arc.Menu.Positioner>
-                <arc.Menu.Content className="bg-gray-50 p-2 border-0 mt-1 z-50 rounded-xl min-w-[150px] outline-none">
+            <arc.Menu.Positioner >
+                <arc.Menu.Content className="bg-gray-50 p-2 border-0 mt-1 relative !z-50 rounded-xl min-w-[150px] outline-none">
                     <div className="flex flex-col gap-1">
                         {items?.map((x) => (
                             <div key={x.title} onClick={(e) => {

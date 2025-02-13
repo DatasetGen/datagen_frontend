@@ -9,7 +9,7 @@ import Button from "../../../../component_library/forms/Button.tsx";
 import {useDialog} from "@ark-ui/react";
 import DatasetCreateFormDialog from "./components/DatasetCreateFormDialog.tsx";
 import DatasetOptionMenu from "./components/DatasetOptionMenu.tsx";
-import {Link} from "react-router";
+import { Link, useNavigate } from 'react-router';
 
 interface Filters{
     name: string
@@ -19,9 +19,10 @@ function DatasetsPage() {
     const filters = useFilters<Filters>()
     const {data, status} = useDatasets({...filters});
     const createFormDialog = useDialog()
+    const navigate = useNavigate()
 
     return (
-        <PageLayout size="xl" title="Your datasets">
+        <PageLayout size="lg" title="Your datasets">
             <DatasetCreateFormDialog dialog={createFormDialog}></DatasetCreateFormDialog>
             <div className="w-full flex justify-between gap-4 py-4">
                 <div className="w-full max-w-[600px]">
@@ -35,9 +36,9 @@ function DatasetsPage() {
                 {
                     data?.results.map((dataset) => (
                             <DatasetOptionMenu key={dataset.id} dataset={dataset}>
-                                <Link to={dataset.id.toString()}>
+                                <div onClick={() => {navigate(dataset.id.toString())}}>
                                     <DatasetCard key={dataset.id} dataset={dataset}></DatasetCard>
-                                </Link>
+                                </div>
                             </DatasetOptionMenu>
                     ))
                 }

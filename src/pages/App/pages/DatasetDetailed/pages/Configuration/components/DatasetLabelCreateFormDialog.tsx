@@ -2,7 +2,7 @@ import {UseDialogReturn} from "@ark-ui/react/dialog";
 import FormikForm from "../../../../../../../component_library/formik/FormikForm.tsx";
 import {FormikInput, FormikTextArea} from "../../../../../../../component_library/formik/FormikInputs.tsx";
 import * as dg from '@ark-ui/react/dialog'
-import {useCreateDataset, useCreateDatasetLabel} from "../../../../../../../api/app/datasets.ts";
+import { useCreateDatasetLabel} from "../../../../../../../api/app/datasets.ts";
 import Button from "../../../../../../../component_library/forms/Button.tsx";
 import FormikButton from "../../../../../../../component_library/formik/FormikButton.tsx";
 import {queryClient} from "../../../../../../../api/client.ts";

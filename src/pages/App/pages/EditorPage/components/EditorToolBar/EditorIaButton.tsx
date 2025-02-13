@@ -1,5 +1,5 @@
 import {useEditorCanvasStore} from "../../core/core.ts";
-import {Popover, usePopover} from "@ark-ui/react/popover";
+import { usePopover} from "@ark-ui/react/popover";
 import FormIconButton from "../../../../../../component_library/forms/FormIconButton.tsx";
 import React, {ReactNode} from "react";
 import {BsStars} from "react-icons/bs";

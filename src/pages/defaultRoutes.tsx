@@ -14,9 +14,10 @@ import ModelsPage from "./App/pages/Models/ModelsPage.tsx";
 import React from "react";
 import {useAuth} from "../api/auth/useAuth.ts";
 import DatasetHomePage from "./App/pages/DatasetDetailed/pages/Home/DatasetHomePage.tsx";
-import ImageDetailedPage from "./App/pages/ImageDetailed/ImageDetailedPage.tsx";
-import DatasetJobs from "./App/pages/DatasetDetailed/pages/Jobs/DatasetJobs.tsx";
-import DatasetJobsDetailed from "./App/pages/DatasetDetailed/pages/Jobs/DatasetJobsDetailed.tsx";
+import EditorPage from "./App/pages/EditorPage/EditorPage.tsx";
+import DatasetLabelling from "./App/pages/DatasetDetailed/pages/Labelling/DatasetLabelling.tsx";
+import FetchLayout from "../component_library/layouts/FetchLayout";
+import BatchDetailed from "./App/pages/DatasetDetailed/pages/BatchDetailed/BatchDetailed.tsx";
 
 const OnlyAuthenticated = ({ children }: {children : React.ReactNode}) => {
     const { data, isLoading, isError } = useAuth();
@@ -26,8 +27,7 @@ const OnlyAuthenticated = ({ children }: {children : React.ReactNode}) => {
 };
 
 const NotAuthenticatedOnly = ({ children }: {children : React.ReactNode}) => {
-    const { data, isLoading, isError } = useAuth();
-    if (isLoading) return <div>Loading...</div>;
+    const { data, isError } = useAuth();
     if (isError || data?.authenticated) return <Navigate to="/app/"/>
     return <>{children}</>;
 };
@@ -35,35 +35,35 @@ const NotAuthenticatedOnly = ({ children }: {children : React.ReactNode}) => {
 function DefaultRoutes() {
 
     const {data, status}=useAuth();
-    if(status === "pending") return <div>Loading...</div>;
 
     return (
-        <Routes>
-            <Route path="*" element={<Navigate to={!data?.authenticated ? "/auth/" : "/app/"}/>}/>
-            <Route path="/auth" element={<NotAuthenticatedOnly><AuthPage/></NotAuthenticatedOnly>}>
-                <Route index element={<SignInPage/>}></Route>
-                <Route path="signup" element={<SignUpPage/>}></Route> </Route>
-            <Route path="/app" element={<OnlyAuthenticated><AppPage/></OnlyAuthenticated>}>
-                <Route index element={<Navigate to="home"/>} />
-                <Route path="home" element={<HomePage/>}/>
-                <Route path="models" element={<ModelsPage/>}/>
-                <Route path="datasets" element={<DatasetsPage/>}>
-                </Route>
-                <Route path="datasets/:dataset_id" element={<DatasetDetailedPage/>}>
-                    <Route index element={<Navigate to="dataset_general"/>}></Route>
-                    <Route path="dataset_general" element={<DatasetHomePage/>}></Route>
-                    <Route path="dataset_configuration" element={<DatasetConfigurationPage/>}></Route>
-                    <Route path="dataset_data" element={<DatasetDataPage/>}></Route>
-                    <Route path="dataset_jobs" element={<DatasetJobs/>}>
-                        <Route path=":job_category_id" element={<DatasetJobsDetailed/>}/>
+        <FetchLayout status={status}>
+            <Routes>
+                <Route path="*" element={<Navigate to={!data?.authenticated ? "/auth/" : "/app/"}/>}/>
+                <Route path="/auth" element={<NotAuthenticatedOnly><AuthPage/></NotAuthenticatedOnly>}>
+                    <Route index element={<SignInPage/>}></Route>
+                    <Route path="signup" element={<SignUpPage/>}></Route> </Route>
+                <Route path="/app" element={<OnlyAuthenticated><AppPage/></OnlyAuthenticated>}>
+                    <Route index element={<Navigate to="home"/>} />
+                    <Route path="home" element={<HomePage/>}/>
+                    <Route path="models" element={<ModelsPage/>}/>
+                    <Route path="datasets" element={<DatasetsPage/>}>
+                    </Route>
+                    <Route path="datasets/:dataset_id/batch/:batch_id" element={<BatchDetailed/>}/>
+                    <Route path="datasets/:dataset_id" element={<DatasetDetailedPage/>}>
+                        <Route index element={<Navigate to="dataset_general"/>}></Route>
+                        <Route path="dataset_general" element={<DatasetHomePage/>}></Route>
+                        <Route path="dataset_configuration" element={<DatasetConfigurationPage/>}></Route>
+                        <Route path="dataset_data" element={<DatasetDataPage/>}></Route>
+                        <Route path="dataset_jobs" element={<DatasetLabelling/>}/>
+                    </Route>
+                    <Route path="configuration" element={<ConfigurationPage/>}>
                     </Route>
                 </Route>
-                <Route path="configuration" element={<ConfigurationPage/>}>
+                <Route path="/app/datasets/:dataset_id/job/:job_id/image/:image_id" element={<OnlyAuthenticated><EditorPage/></OnlyAuthenticated>}>
                 </Route>
-            </Route>
-            <Route path="/app/datasets/:dataset_id/image_editor/:image_id" element={<OnlyAuthenticated><ImageDetailedPage/></OnlyAuthenticated>}>
-            </Route>
-        </Routes>
+            </Routes>
+        </FetchLayout>
     );
 }
 export default DefaultRoutes;

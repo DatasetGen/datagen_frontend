@@ -1,7 +1,7 @@
 import {createMutationHook, createQueryHook} from "../engine/factories";
-import {Dataset, DatasetImage, DatasetLabel, Job, JobCategory, User} from "../../types";
+import {Dataset, DatasetImage, DatasetLabel, Job, Batch, User} from "../../types";
 import {ApiPagination} from "../engine/types.ts";
-import {InputAnnotation, OutputAnnotation} from "../../pages/App/pages/ImageDetailed/core/annotators/types.ts";
+import {InputAnnotation, OutputAnnotation} from "../../pages/App/pages/EditorPage/core/annotators/types.ts";
 
 
 export const useDatasets = createQueryHook<ApiPagination<Dataset>>(["datasets",], "/datasets/")
@@ -25,16 +25,28 @@ export const useDatasetJobs = (dataset_pk : number) => (
     createQueryHook<ApiPagination<Job>>(["datasets", dataset_pk, "jobs"], `/datasets/${dataset_pk}/jobs/`)
 )
 
-export const useDatasetJobCategories = (dataset_pk : number) => (
-    createQueryHook<ApiPagination<JobCategory>>(["datasets", dataset_pk, "job_categories"], `/datasets/${dataset_pk}/job_categories/`)
+export const useDatasetJob = (dataset_pk : number, job_id: number) => (
+    createQueryHook<Job>(["datasets", dataset_pk, "jobs", job_id], `/datasets/${dataset_pk}/jobs/${job_id}/`)
 )
-export const useCreateDatasetJobsCategories = (dataset_id: number) => createMutationHook<{name: string}, JobCategory>("POST", "/datasets/" + dataset_id +"/job_categories/")
-export const useCreateDatasetJob = (dataset_id: number) => createMutationHook<{name: string, status?: string, asignee?: number, category?:number}, JobCategory>("POST", "/datasets/" + dataset_id +"/jobs/")
-export const useDestroyDatasetJobCategory = (dataset_id: number, job_category_id: number) => createMutationHook<{}, JobCategory>("DELETE", "/datasets/" + dataset_id +"/job_categories/" + job_category_id)
+
+export const useDatasetBatches = (dataset_pk : number) => (
+    createQueryHook<ApiPagination<Batch>>(["datasets", dataset_pk, "batches"], `/datasets/${dataset_pk}/batches/`)
+)
+export const useDatasetBatch = (dataset_pk : number, batch_pk : number) => (
+    createQueryHook<Batch>(["datasets", dataset_pk, "batches", batch_pk], `/datasets/${dataset_pk}/batches/${batch_pk}/`)
+)
+export const useCreateBatch = (dataset_id: number) => createMutationHook<{name: string}, Batch>("POST", "/datasets/" + dataset_id +"/batches/")
+export const useCreateDatasetJob = (dataset_id: number) => createMutationHook<{name: string, status?: string, asignee?: number, category?:number}, Job>("POST", "/datasets/" + dataset_id +"/jobs/")
+export const useModifyDatasetJob = (dataset_id: number, job_id: number) => createMutationHook<Partial<Job>, Job>("PUT", "/datasets/" + dataset_id +"/jobs/"+job_id+"/")
+export const useDestroyBatch = (dataset_id: number, batch_id: number) => createMutationHook<{}, Batch>("DELETE", "/datasets/" + dataset_id +"/batches/" + batch_id)
+export const useAssignBatch = (dataset_id: number, batch_id: number) => createMutationHook<{user_ids: number[], images_per_task:number}, Batch>("POST", "/datasets/" + dataset_id +"/batches/" + batch_id + "/assign/")
+export const useDestroyJob = (dataset_id: number, job_id: number) => createMutationHook<{}, Batch>("DELETE", "/datasets/" + dataset_id +"/jobs/" + job_id)
 
 
 
-export const useCreateDatasetImages = (dataset_id: number) => createMutationHook<{image: string}, Dataset>("POST", "/datasets/" + dataset_id +"/images/")
+export const useCreateDatasetImages = (dataset_id: number) => createMutationHook<{image: string, job?: number, is_synthetic?: boolean}, DatasetImage>("POST", "/datasets/" + dataset_id +"/images/")
+export const useModifyDatasetImage = (dataset_id: number, image_id: number) => createMutationHook<Partial<DatasetImage>, DatasetImage>("PATCH", "/datasets/" + dataset_id +"/images/" + image_id + "/")
+
 export const useCreateZipDatasetImages = (dataset_id: number) => createMutationHook<{zip_file: string}, Dataset>("POST", "/datasets/" + dataset_id +"/images/zip/")
 
 export const useDatasetLabels = (dataset_pk : number) => (
@@ -45,7 +57,7 @@ export const useRemoveDatasetLabel = (dataset_id: number, label_id: number) => (
 )
 export const useCreateDatasetLabel = (dataset_id: number) => createMutationHook<{name: string, slug: string, color: string}, Dataset>("POST", "/datasets/" + dataset_id +"/labels/")
 export const useDatasetImage = (dataset_pk : number, image_pk : number) => (
-    createQueryHook<DatasetImage>(["datasets", dataset_pk, "images", image_pk], `/datasets/${dataset_pk}/images/${image_pk}`)
+    createQueryHook<DatasetImage>(["datasets", dataset_pk, "images", image_pk], `/datasets/${dataset_pk}/images/${image_pk}/`)
 )
 export const useSaveAnnotations = (dataset_pk : number, image_pk : number) => (
     createMutationHook<OutputAnnotation<any>, OutputAnnotation<any>>(

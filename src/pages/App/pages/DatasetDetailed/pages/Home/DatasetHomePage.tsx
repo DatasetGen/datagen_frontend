@@ -3,7 +3,6 @@ import {useDataset} from "../../../../../../api/app/datasets.ts";
 import FetchLayout from "../../../../../../component_library/layouts/FetchLayout";
 import DatasetHomeStats from "./components/DatasetHomeStats.tsx";
 import ImagesPerLabelBarChart from "./components/ImagesPerLabelBarChart.tsx";
-import Title from "../../../../../../component_library/texts/Title.tsx";
 import RealVsSyntheticDataPieChart from "./components/RealVsSyntheticDataPieChart.tsx";
 
 function DatasetHomePage() {

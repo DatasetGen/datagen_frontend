@@ -7,7 +7,6 @@ import {BiData, BiDownload, BiExport} from "react-icons/bi";
 import OptionMenu from "../../../../component_library/utils/OptionMenu.tsx";
 import FormIconButton from "../../../../component_library/forms/FormIconButton.tsx";
 import {FaRegFileZipper} from "react-icons/fa6";
-import {FaGoogleDrive} from "react-icons/fa6";
 import {TbBrandGoogleDrive} from "react-icons/tb";
 
 const elements = [

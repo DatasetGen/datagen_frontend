@@ -30,8 +30,8 @@ const elements = [
 function AppPage() {
     return (
         <Sidebar.Wrapper>
-            <Sidebar.Bar colorSchema="brand_secondary" logoImg={Logo} elements={elements}></Sidebar.Bar>
-            <Sidebar.Content>
+            <Sidebar.Bar size="sm" colorSchema="brand_secondary" logoImg={Logo} elements={elements}></Sidebar.Bar>
+            <Sidebar.Content size="sm">
                 <Outlet></Outlet>
             </Sidebar.Content>
         </Sidebar.Wrapper>

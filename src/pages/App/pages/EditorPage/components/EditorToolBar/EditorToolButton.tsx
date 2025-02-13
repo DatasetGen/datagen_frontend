@@ -9,7 +9,6 @@ import {ReactNode} from "react";
 import {DatasetLabel} from "../../../../../../types";
 import {EditorTool} from "../../core/EditorCanvas.ts";
 import {Formik} from "formik";
-import FormSelect from "../../../../../../component_library/forms/FormSelect.tsx";
 import {FormikSelect} from "../../../../../../component_library/formik/FormikInputs.tsx";
 
 export default function EditorToolButton({tool, toolName, children, title} : {
@@ -27,10 +26,8 @@ export default function EditorToolButton({tool, toolName, children, title} : {
             placement:"right-start"
         },
     })
-    if(isFetching) return<div>loading...</div>
 
     return (
-
         <Popover.RootProvider value={popover}>
             <Popover.Trigger asChild>
                 <FormIconButton size="md" colorSchema={currentTool == toolName ? "brand_primary" : "secondary"}>
@@ -46,8 +43,8 @@ export default function EditorToolButton({tool, toolName, children, title} : {
                                 {title}
                             </span>
                         </Paragraph>
-                        <Formik initialValues={{label:data.results[0].id.toString()}} onSubmit={(formData, helpers) => {
-                            const label= data?.results.find(x=> x.id === parseInt(formData.label)) ?? undefined
+                        <Formik initialValues={{label:data?.results[0]?.id.toString()}} onSubmit={(formData, helpers) => {
+                            const label= data?.results.find(x=> x.id === parseInt(formData?.label ?? "")) ?? undefined
                             helpers.setSubmitting(false)
                             popover.setOpen(false)
                             if(label) {

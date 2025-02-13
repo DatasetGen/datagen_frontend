@@ -8,7 +8,8 @@ const styles = tv({
     base: "transition-all rounded-lg font-semibold w-full flex justify-center items-center gap-2",
     variants: {
         "size" : {
-            "sm": "h-[25px] w-[25px] py-1 text-sm",
+            "xs": "h-[25px] w-[25px] py-1 text-sm",
+            "sm": "h-[30px] w-[30px] py-1 text-sm",
             "md": "h-[35px] w-[35px] text-md",
             "lg": "h-[40px] w-[40px] text-lg",
             "xl": "h-[45px] w-[45px] p-4 text-lg",
@@ -43,7 +44,7 @@ export interface IconButtonProps extends StyleSystemProps, Omit<DetailedHTMLProp
 
 function FormIconButton({size, loading, colorSchema, children, disabled, rounded, ...props}: IconButtonProps) {
     return (
-        <button {...props} className={styles({size, colorSchema, disabled, rounded})} >
+        <button {...props} className={styles({size, colorSchema, disabled, rounded})} onClick={disabled ? undefined : props.onClick} >
             {loading && <Spinner size={size} colorSchema={colorSchema} disabled={disabled}></Spinner>}
             {!loading && children}
         </button>

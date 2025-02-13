@@ -3,14 +3,14 @@ import {EditorCanvas} from "./EditorCanvas.ts";
 import {PanningPlugin} from "./plugins/PanningPlugin.ts";
 import {ZoomPlugin} from "./plugins/ZoomPlugin.ts";
 import {CursorTool} from "./tools/CursorTool.ts";
-import {DatasetLabel} from "../../../../../types";
-import {Annotation, Annotator, InputAnnotation} from "./annotators/types.ts";
+import {DatasetImage, DatasetLabel} from "../../../../../types";
+import {Annotation} from "./annotators/types.ts";
 
 interface EditorCanvasStore {
     annotations: Annotation[]
     addAnnotation(annotation: Annotation): void;
     canvasInstance: EditorCanvas | null;
-    setCanvasInstance: (image: string, annotations: InputAnnotation<any>[]) => void;
+    setCanvasInstance: (image: DatasetImage) => void;
     currentTool: string | undefined,
     deleteAnnotation: (annotation: string) => void;
     changeAnnotationLabel: (label: DatasetLabel, annotation: string) => void;
@@ -25,17 +25,20 @@ export const useEditorCanvasStore = create<EditorCanvasStore>((set) => ({
         }))
     },
     canvasInstance: null,
-    setCanvasInstance: async (image, annotations: InputAnnotation<any>[]) => {
-        set((state)=>({
-            annotations: []
-        }))
+    setCanvasInstance: async (image: DatasetImage) => {
+        set((state)=>{
+            state?.canvasInstance?.dispose()
+            return ({
+                annotations: []
+            })
+        })
         const editor = new EditorCanvas("principal_canvas")
         editor.addPlugin(new PanningPlugin())
         editor.addPlugin(new ZoomPlugin())
-        await editor.initialize(image);
+        await editor.initialize(image.image);
         editor.selectTool(new CursorTool())
-        annotations.forEach(annotation => editor.addAnnotation(annotation))
         set((state) => {
+            image.annotations.forEach(annotation => editor.addAnnotation(annotation))
             return { canvasInstance: editor, currentLabel: undefined };
         });
     },

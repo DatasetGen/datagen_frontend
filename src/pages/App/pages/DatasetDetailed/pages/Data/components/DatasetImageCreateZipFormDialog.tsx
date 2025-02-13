@@ -1,4 +1,4 @@
-import {useCreateDatasetImages, useCreateZipDatasetImages} from "../../../../../../../api/app/datasets.ts";
+import { useCreateZipDatasetImages} from "../../../../../../../api/app/datasets.ts";
 import {queryClient} from "../../../../../../../api/client.ts";
 import FormikForm from "../../../../../../../component_library/formik/FormikForm.tsx";
 import FormikButton from "../../../../../../../component_library/formik/FormikButton.tsx";

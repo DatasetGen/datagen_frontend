@@ -1,4 +1,4 @@
-import {InputAnnotation} from "../pages/App/pages/ImageDetailed/core/annotators/types.ts";
+import {InputAnnotation} from "../pages/App/pages/EditorPage/core/annotators/types.ts";
 
 export type User ={
     id: number,
@@ -34,7 +34,11 @@ export type DatasetImage = {
     extension: string;
     name: string;
     labels: DatasetLabel[];
-    annotations: InputAnnotation<any>[]
+    annotations: InputAnnotation<any>[],
+    job?: number,
+    batch: number,
+    done: boolean,
+    reviewed: boolean,
 };
 
 export type Job = {
@@ -45,18 +49,26 @@ export type Job = {
     timestamp: string;  // ISO 8601 format
     status: string;
     done: boolean;
+    reviewed_frames: number;
+    done_frames: number;
     owner: User,
-    assignee: string | null;
+    assignee: User | null;
     category: string | null;
+    current_image?: number | null;
+    start_range: number,
+    end_range: number,
+    images: number[]
+    reviewed: boolean
 };
 
-export type JobCategory = {
+export type Batch = {
     id: number;
     total: number;
     completed: number;
     name: string;
     timestamp: string;  // ISO 8601 format
     dataset: number;
+    unassigned: number;
 };
 
 
