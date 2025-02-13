@@ -72,7 +72,6 @@ function ImagesPerLabelBarChart() {
                             radius={[10, 10, 0, 0]}
                             dataKey="real"
                             stackId="a"
-                            fill="#68D391"
                             fill="#905EF8"
                         >
                             <LabelList
