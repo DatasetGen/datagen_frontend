@@ -29,18 +29,19 @@ function EditorHeader() {
         retry: 0,
         refetchOnMount: false
     })
-    const {mutateAsync : modifyDatasetImage, } = useModifyDatasetImage(parseInt(dataset_id ?? ""), parseInt(image_id ?? ""))({
-        onSuccess: async (data) => {
-            await queryClient.invalidateQueries({
-                queryKey: ["datasets", parseInt(dataset_id ?? ""), "images", parseInt(image_id ?? "")]
-            })
-        }
-    });
     const { mutateAsync } = useSaveAnnotations(parseInt(dataset_id ?? ""), parseInt(image_id ?? ""))({
         onSuccess: () => {
             toast.success("Annotations Saved")
         }
     })
+    const {mutateAsync : modifyDatasetImage, } = useModifyDatasetImage(parseInt(dataset_id ?? ""), parseInt(image_id ?? ""))({
+        onSuccess: async (data) => {
+              await mutateAsync(canvasInstance?.exportAnnotations(annotations))
+              await queryClient.invalidateQueries({
+                  queryKey: ["datasets", parseInt(dataset_id ?? ""), "images", parseInt(image_id ?? "")]
+              })
+        }
+    });
 
     return (
         <FetchLayout statusArray={[datasetImageStatus,]}>

@@ -44,7 +44,7 @@ function DefaultRoutes() {
                     <Route index element={<SignInPage/>}></Route>
                     <Route path="signup" element={<SignUpPage/>}></Route> </Route>
                 <Route path="/app" element={<OnlyAuthenticated><AppPage/></OnlyAuthenticated>}>
-                    <Route index element={<Navigate to="home"/>} />
+                    <Route index element={<Navigate to="datasets"/>} />
                     <Route path="home" element={<HomePage/>}/>
                     <Route path="models" element={<ModelsPage/>}/>
                     <Route path="datasets" element={<DatasetsPage/>}>

@@ -2,8 +2,11 @@ import * as fabric from "fabric";
 import { useEditorCanvasStore} from "./core.ts";
 import { BoundingBoxAnnotator} from "./annotators/BoundingBoxAnnotator.tsx";
 import { PolygonAnnotator} from "./annotators/PolygonAnnotator.tsx";
-import {Annotation, Annotator, InputAnnotation} from "./annotators/types.ts";
+import { Annotation, Annotator, InputAnnotation, OutputAnnotation } from './annotators/types.ts';
 import {CursorTool} from "./tools/CursorTool.ts";
+import { DatasetLabel } from '../../../../../types';
+import { Label } from 'recharts';
+import { Input } from 'postcss';
 
 export class EditorCanvas extends fabric.Canvas {
     public isDragging = false;
@@ -136,7 +139,6 @@ export class EditorCanvas extends fabric.Canvas {
         const annotator =annotators[annotation.type] as Annotator<T>
         const importedAnnotation = annotator.loadAnnotation(annotation)
         useEditorCanvasStore.getState().addAnnotation(importedAnnotation)
-
     }
 
     private getAnnotators() {
@@ -153,6 +155,16 @@ export class EditorCanvas extends fabric.Canvas {
             const annotator = annotators[x.type]
             return annotator.annotationToJson(x)
         })
+    }
+
+
+    public changeAnnotationLabel<T>(annotation: Annotation, newLabel : DatasetLabel){
+        const outputAnnotation = this.exportAnnotations([annotation,])[0];
+        const inputAnnotation : InputAnnotation<T> = {
+            ...outputAnnotation,
+            label: newLabel
+        }
+        return this.getAnnotators()[inputAnnotation.type].loadAnnotation(inputAnnotation)
     }
 
 }

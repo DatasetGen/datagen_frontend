@@ -4,7 +4,7 @@ import {PanningPlugin} from "./plugins/PanningPlugin.ts";
 import {ZoomPlugin} from "./plugins/ZoomPlugin.ts";
 import {CursorTool} from "./tools/CursorTool.ts";
 import {DatasetImage, DatasetLabel} from "../../../../../types";
-import {Annotation} from "./annotators/types.ts";
+import { Annotation, InputAnnotation } from './annotators/types.ts';
 
 interface EditorCanvasStore {
     annotations: Annotation[]
@@ -13,7 +13,7 @@ interface EditorCanvasStore {
     setCanvasInstance: (image: DatasetImage) => void;
     currentTool: string | undefined,
     deleteAnnotation: (annotation: string) => void;
-    changeAnnotationLabel: (label: DatasetLabel, annotation: string) => void;
+    changeAnnotationLabel: (label: DatasetLabel, annotation: Annotation) => void;
 }
 
 // Create the Zustand store
@@ -51,7 +51,23 @@ export const useEditorCanvasStore = create<EditorCanvasStore>((set) => ({
             }
         })
     },
-    changeAnnotationLabel: (label: DatasetLabel, annotation: string) => {
+    changeAnnotationLabel: (label: DatasetLabel, annotation: Annotation) => {
+        set((state)=> {
+                state.canvasInstance?.remove(annotation.object)
+                const endAnnotation = state?.canvasInstance?.changeAnnotationLabel(annotation, label)
+                return {
+                    annotations: state.annotations.map(x => {
+                        if(x.id === annotation.id) {
+                            return {
+                                ...annotation,
+                                label: label.id,
+                                object: endAnnotation!.object
+                            }
+                        }
+                        return x
+                    })
+                }
+            })
     },
     currentTool: undefined
 }));

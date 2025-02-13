@@ -25,6 +25,8 @@ export type DatasetLabel = {
     name: string;
     slug: string;
     color: string;
+    prompt: string;
+    negative_prompt:string
 };
 
 export type DatasetImage = {

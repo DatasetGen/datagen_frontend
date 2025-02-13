@@ -26,29 +26,34 @@ function DatasetLabelCard({label} : DatasetLabelCardProps) {
         }
     })
 
+    /*
+
+     */
+
     return (
         <>
         <DeleteDialog callback={async () => {await mutateAsync({})}} dialog={deleteDialog}></DeleteDialog>
-        <div key={label.id} className="px-2 bg-gray-100 border-2 rounded-xl flex items-center gap-7 text-gray-500 font-semibold">
-            <div className="flex items-center gap-2">
-                <div className="flex items-center gap-2 text-sm">
-                    <IoMdPricetag color={label?.color}></IoMdPricetag>
+        <div key={label.id} className="p-3 bg-gray-100 border-2 rounded-xl flex items-center gap-7 text-gray-500 font-semibold w-full">
+            <div className="w-full flex justify-between">
+                <div className="flex items-center gap-2 text-base">
+                    <IoMdPricetag size={20} color={label?.color}></IoMdPricetag>
                     {label.name}
-
                 </div>
+
+                <OptionMenu items={[
+                    {
+                        icon: <BiTrash></BiTrash>,
+                        title: "Eliminar",
+                        callback: () => {deleteDialog.setOpen(true)},
+                        trash: true
+                    }
+                ]}>
+                    <FormIconButton size={"sm"} colorSchema="primary">
+                        <BiDotsVertical></BiDotsVertical>
+                    </FormIconButton>
+                </OptionMenu>
+
             </div>
-            <OptionMenu items={[
-                {
-                    icon: <BiTrash></BiTrash>,
-                    title: "Eliminar",
-                    callback: () => {deleteDialog.setOpen(true)},
-                    trash: true
-                }
-            ]}>
-                <FormIconButton size={"sm"} colorSchema="primary">
-                    <BiDotsVertical></BiDotsVertical>
-                </FormIconButton>
-            </OptionMenu>
         </div>
         </>
     );

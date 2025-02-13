@@ -12,16 +12,16 @@ export interface DeleteDialogProps extends DialogProps{
 
 function DeleteDialog({ callback, dialog, ...props}: DeleteDialogProps) {
     return (
-        <Dialog {...props} title="Eliminar recurso" dialog={dialog}>
+        <Dialog {...props} title="Permanent Action" dialog={dialog}>
             <FormikForm initialValues={{}} onSubmit={async () => {
                 await callback()
             }}>
-                <Paragraph colorSchema="secondary">¿Estas seguro que quieres realizár esta acción? Una vez completada no habrá forma de deshacerla</Paragraph>
+                <Paragraph colorSchema="secondary">Are you sure you want to perform this action? It cannot be undone</Paragraph>
                 <div className="flex gap-3 mt-9">
                     <dlg.DialogCloseTrigger asChild>
-                        <Button size="md" colorSchema="secondary">Cancelar</Button>
+                        <Button size="md" colorSchema="secondary">Cancel</Button>
                     </dlg.DialogCloseTrigger>
-                    <FormikButton size="md" danger>Confirmar</FormikButton>
+                    <FormikButton size="md" danger>Confirm</FormikButton>
                 </div>
             </FormikForm>
         </Dialog>

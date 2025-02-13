@@ -8,7 +8,7 @@ import FetchLayout from "../../../../component_library/layouts/FetchLayout";
 function EditorPage() {
 
     const {dataset_id, image_id} = useParams();
-    const {data, status, isFetching} = useDatasetImage(parseInt(dataset_id ?? ""), parseInt(image_id ?? ""))({}, {
+    const {data, status } = useDatasetImage(parseInt(dataset_id ?? ""), parseInt(image_id ?? ""))({}, {
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
         refetchOnMount: true,

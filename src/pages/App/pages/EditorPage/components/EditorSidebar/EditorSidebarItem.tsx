@@ -31,7 +31,7 @@ const icon = {
 
 export default function EditorSidebarElement({annotation}: {annotation: Annotation}) {
 
-    const {canvasInstance, deleteAnnotation} = useEditorCanvasStore()
+    const {canvasInstance, deleteAnnotation, changeAnnotationLabel} = useEditorCanvasStore()
     const {dataset_id} = useParams()
     const {data, status} = useDatasetLabels(parseInt(dataset_id ?? ""))()
     const dialog = useDialog();
@@ -72,7 +72,11 @@ export default function EditorSidebarElement({annotation}: {annotation: Annotati
                     </p>
                 </div>
                 <div className="mt-3 grid gap-2">
-                    <FormSelect size="sm" colorSchema="secondary" defaultValue={currLabel?.id} options={data?.results.map(x => ({label: x.name, value: x.id}))}></FormSelect>
+                    <FormSelect onChange={(e) => {
+                        const label = data?.results.find(x => x.id == e.target!.value)
+                        if(!label) return;
+                        changeAnnotationLabel(label, annotation)
+                    }} size="sm" colorSchema="secondary" defaultValue={currLabel?.id} options={data?.results.map(x => ({label: x.name, value: x.id}))}></FormSelect>
                     <div className="flex justify-between gap-2">
                         <OptionMenu size="sm" items={[{
                             icon: <BsStars></BsStars>,

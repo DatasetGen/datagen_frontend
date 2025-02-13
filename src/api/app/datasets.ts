@@ -8,6 +8,15 @@ export const useDatasets = createQueryHook<ApiPagination<Dataset>>(["datasets",]
 export const useDataset = (pk : number) => (
     createQueryHook<Dataset>(["datasets", pk], `/datasets/${pk}/`)
 )
+export const useModifyDataset = (pk : number) => (
+  createMutationHook<Partial<Dataset>, Dataset>("PATCH", `/datasets/${pk}/`)
+)
+export const useDatasetPieChart = (pk : number) => (
+  createQueryHook<{name: string, value: number, color: string}[]>(["datasets", pk, "pie_chart"], `/datasets/${pk}/pie_chart/`)
+)
+export const useDatasetBarChart = (pk : number) => (
+  createQueryHook<Dataset>(["datasets", pk, "bar_chart"], `/datasets/${pk}/bar_chart/`)
+)
 export const useUsers = () => (
     createQueryHook<User[]>(["users"], `auth/users/`)
 )

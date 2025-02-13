@@ -10,9 +10,20 @@ import {useDialog} from "@ark-ui/react";
 import DatasetCreateFormDialog from "./components/DatasetCreateFormDialog.tsx";
 import DatasetOptionMenu from "./components/DatasetOptionMenu.tsx";
 import { Link, useNavigate } from 'react-router';
+import EmptyImage from '../../../../assets/datasetsEmpty.png'
+import Title from '../../../../component_library/texts/Title.tsx';
+import Paragraph from '../../../../component_library/texts/Paragraph.tsx';
 
 interface Filters{
     name: string
+}
+
+function DatasetsEmpty(){
+  return <div className="w-full flex flex-col items-center justify-center gap-3">
+    <img className="max-w-[400px] mb-[-60px]" src={EmptyImage}/>
+    <Title size="md" colorSchema="primary">You don't have any dataset yet</Title>
+    <Paragraph size="sm" colorSchema="secondary">Add a new dataset in order to start using datagen</Paragraph>
+  </div>
 }
 
 function DatasetsPage() {
@@ -32,7 +43,7 @@ function DatasetsPage() {
                     <Button onClick={() => createFormDialog.setOpen(true)} size="lg">Crear nuevo</Button>
                 </div>
             </div>
-            <FetchLayout status={status} className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4  gap-4">
+            <FetchLayout isEmpty={(data?.results.length ?? 0) < 1} status={status} className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4  gap-4" emptyComponent={<DatasetsEmpty/>}>
                 {
                     data?.results.map((dataset) => (
                             <DatasetOptionMenu key={dataset.id} dataset={dataset}>

@@ -7,6 +7,7 @@ import {HiMail, HiLockClosed} from "react-icons/hi";
 import Logo from '../../../../assets/datasetPositivePrimaryLogo.png'
 import Title from "../../../../component_library/texts/Title.tsx";
 import Paragraph from "../../../../component_library/texts/Paragraph.tsx";
+import loginCreativity from '../../../../assets/loginCreativity.png'
 
 function SignInPage() {
     const {mutateAsync, error} = useLogin({
@@ -34,7 +35,13 @@ function SignInPage() {
                     <FormikButton size="md">Login</FormikButton>
                 </FormikForm>
             </div>
-            <div className="w-full bg-brand_secondary-500 h-[100vh]"></div>
+            <div className="bg-brand_primary-200 h-[100vh] relative overflow-hidden flex justify-center items-center">
+              <div className="w-full p-20">
+                <Title size="lg" colorSchema="brand_secondary">Join the Generative AI labeling revolution</Title>
+                <Paragraph size="xl">Welcome to DataGen</Paragraph>
+                <img className="mt-10 max-w-[900px] w-full " src={loginCreativity} />
+              </div>
+            </div>
         </section>
     );
 }

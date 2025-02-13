@@ -5,19 +5,9 @@ import Logo from '../../assets/datagenLogo.png'
 
 const elements = [
     {
-        label : "Home",
-        icon : <BiHome></BiHome>,
-        path: "home"
-    },
-    {
         label : "Datasets",
         icon : <BiData></BiData>,
         path: "datasets"
-    },
-    {
-        label : "Models",
-        icon : <BiBot></BiBot>,
-        path: "models"
     },
     {
         label : "Configuration",

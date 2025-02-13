@@ -1,14 +1,18 @@
-import React from 'react';
 import {PieChart, Pie, Tooltip, ResponsiveContainer, Cell, Legend} from 'recharts';
 import Title from "../../../../../../../component_library/texts/Title.tsx";
 import FormSelect from "../../../../../../../component_library/forms/FormSelect.tsx";
+import { useDatasetPieChart } from '../../../../../../../api/app/datasets.ts';
+import FetchLayout from '../../../../../../../component_library/layouts/FetchLayout';
+import { useParams } from 'react-router';
 
-const data01 = [
-    { name: 'Synthetic', value: 400, color: "#905ef8" },
-    { name: 'Real', value: 300, color:"#111411" },
-];
+
 
 function ImagesPerLabelChart() {
+
+
+    const {dataset_id} = useParams()
+    const {data, status} = useDatasetPieChart(parseInt(dataset_id ?? ""))()
+
     return (
         <div className="w-full h-[400px] bg-gray-100 p-4 rounded-2xl grid gap-6 ">
             <div className="flex items-center justify-between">
@@ -24,25 +28,27 @@ function ImagesPerLabelChart() {
                     },
                 ]}></FormSelect>
             </div>
-            <ResponsiveContainer width="100%" height="100%">
-                <PieChart width={400} height={400}>
-                    <Pie
-                        dataKey="value"
-                        isAnimationActive={false}
-                        data={data01}
-                        cx="50%"
-                        cy="50%"
-                        outerRadius={80}
-                        label
-                    >
-                        {data01.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                    </Pie>
-                    <Legend />
-                    <Tooltip />
-                </PieChart>
-            </ResponsiveContainer>
+            <FetchLayout statusArray={[status,]}>
+                <ResponsiveContainer width="100%" height="100%">
+                    <PieChart width={400} height={400}>
+                        <Pie
+                            dataKey="value"
+                            isAnimationActive={false}
+                            data={data}
+                            cx="50%"
+                            cy="50%"
+                            outerRadius={80}
+                            label
+                        >
+                            {data?.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={entry.color} />
+                            ))}
+                        </Pie>
+                        <Legend />
+                        <Tooltip />
+                    </PieChart>
+                </ResponsiveContainer>
+            </FetchLayout>
         </div>
     );
 }
