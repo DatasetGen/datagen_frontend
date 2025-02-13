@@ -2,11 +2,9 @@ import * as fabric from "fabric";
 import { useEditorCanvasStore} from "./core.ts";
 import { BoundingBoxAnnotator} from "./annotators/BoundingBoxAnnotator.tsx";
 import { PolygonAnnotator} from "./annotators/PolygonAnnotator.tsx";
-import { Annotation, Annotator, InputAnnotation, OutputAnnotation } from './annotators/types.ts';
+import { Annotation, Annotator, InputAnnotation } from './annotators/types.ts';
 import {CursorTool} from "./tools/CursorTool.ts";
 import { DatasetLabel } from '../../../../../types';
-import { Label } from 'recharts';
-import { Input } from 'postcss';
 
 export class EditorCanvas extends fabric.Canvas {
     public isDragging = false;

@@ -1,6 +1,6 @@
 import {Outlet} from "react-router";
 import {Sidebar} from "../../component_library/navigation/Sidebar";
-import {BiBot, BiCog, BiData, BiHome} from "react-icons/bi";
+import { BiCog, BiData} from "react-icons/bi";
 import Logo from '../../assets/datagenLogo.png'
 
 const elements = [

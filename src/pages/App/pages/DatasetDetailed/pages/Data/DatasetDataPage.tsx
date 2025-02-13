@@ -9,7 +9,6 @@ import {FormikPagination} from "../../../../../../component_library/formik/Formi
 import EmptyImage from '../../../../../../assets/datasetsEmpty.png';
 import Title from '../../../../../../component_library/texts/Title.tsx';
 import Paragraph from '../../../../../../component_library/texts/Paragraph.tsx';
-import { BiUser } from 'react-icons/bi';
 import Button from '../../../../../../component_library/forms/Button.tsx';
 
 const DataGenOptions = [

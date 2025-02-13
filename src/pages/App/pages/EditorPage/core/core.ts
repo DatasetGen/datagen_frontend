@@ -4,7 +4,7 @@ import {PanningPlugin} from "./plugins/PanningPlugin.ts";
 import {ZoomPlugin} from "./plugins/ZoomPlugin.ts";
 import {CursorTool} from "./tools/CursorTool.ts";
 import {DatasetImage, DatasetLabel} from "../../../../../types";
-import { Annotation, InputAnnotation } from './annotators/types.ts';
+import { Annotation } from './annotators/types.ts';
 
 interface EditorCanvasStore {
     annotations: Annotation[]

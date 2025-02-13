@@ -5,7 +5,7 @@ import { Avatar } from '@ark-ui/react/avatar'
 import {FaCheck, FaMessage, FaPlay} from "react-icons/fa6";
 import Button from "../component_library/forms/Button.tsx";
 import {IoIosAdd} from "react-icons/io";
-import { useDestroyBatch, useDestroyJob, useModifyDatasetJob } from '../api/app/datasets.ts';
+import { useDestroyJob, useModifyDatasetJob } from '../api/app/datasets.ts';
 import {queryClient} from "../api/client.ts";
 import { useDialog } from '@ark-ui/react';
 import DeleteDialog from '../component_library/dialogs/DeleteDialog.tsx';

@@ -17,5 +17,7 @@ COPY . .
 # Step 7: Expose the port your app will be running on
 EXPOSE 3000
 
+RUN npm run build
+
 # Step 8: Use Vite to preview the app in production mode
-CMD ["npm", "run", "dev", "--", "--host"]
+CMD ["npm", "run", "preview", "--", "--host"]
