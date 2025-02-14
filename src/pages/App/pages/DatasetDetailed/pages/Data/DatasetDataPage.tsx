@@ -59,7 +59,7 @@ function DatasetDataPage() {
                     <FormikPagination size="sm" colorSchema="secondary" name="page" paginationProps={{
                         count: data?.count ?? 0,
                         siblingCount: 1,
-                        pageSize: data?.page_size ?? 0
+                        pageSize: filters.page_size ?? 0
                     }}></FormikPagination>
                 </div>
             </div>
@@ -81,5 +81,5 @@ function DatasetDataPage() {
         ;
 }
 
-const DatasetDataPageWithFilters = withFilters<{ page: number, }>(DatasetDataPage, {page: 1, page_size: 12});
+const DatasetDataPageWithFilters = withFilters<{ page: number, page_size: number }>(DatasetDataPage, {page: 1, page_size: 12});
 export default DatasetDataPageWithFilters

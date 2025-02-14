@@ -48,7 +48,14 @@ export class BoundingBoxAnnotator implements Annotator<BoundingBoxAnnotation> {
             });
             this?.canvas.renderAll();
         });
+
+        rect.on("mousewheel", () => {
+            rect.set({
+                strokeWidth: 3/(this.canvas.getZoom()/0.8)
+            })
+        })
         this.canvas.add(rect)
+
         return {
             id: uuidv4(),
             type: "bounding_box",

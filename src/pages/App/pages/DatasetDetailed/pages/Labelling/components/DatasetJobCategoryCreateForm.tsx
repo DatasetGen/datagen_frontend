@@ -149,7 +149,6 @@ function DatasetCreateFormDialog({dialog}: Props) {
                             <FormikInput placeholder="Name of the category" name="name" label="Name"></FormikInput>
 
                             <FormikFileField name="zip_file" fileField={{
-                                accept: 'application/zip',
                                 maxFiles: 1
                             }} label="Zip file"></FormikFileField>
                             <div
