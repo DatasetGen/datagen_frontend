@@ -25,18 +25,20 @@ const FormFileField = ({label, fileField} : Props) => {
             <FileUpload.ItemGroup>
                 <FileUpload.Context>
                     {({ acceptedFiles }) =>
+                      <div className="grid grid-cols-1">
+                        {
                         acceptedFiles.map((file) => (
-                            <FileUpload.Item key={file.name} file={file} className="flex justify-between bg-gray-100 p-2 items-center rounded-xl">
-                                <div className="flex items-center gap-3 text-xs font-semibold">
+                            <FileUpload.Item key={file.name} file={file} className="justify-between bg-gray-100 p-3 rounded-lg flex items-center gap-3">
+                                <div className="flex items-center gap-3 text-xs font-semibold ">
                                     <FileUpload.ItemPreview type="image/*">
-                                        <FileUpload.ItemPreviewImage />
+                                        <FileUpload.ItemPreviewImage className="min-w-[70px] w-[70px] h-[70px] min-h-[70px] object-cover rounded-lg" />
                                     </FileUpload.ItemPreview>
                                     <FileUpload.ItemPreview type=".*">
                                         <BiFile size={20} className="text-red-500"/>
                                     </FileUpload.ItemPreview>
-                                    <FileUpload.ItemName className="text-gray-500" />
+                                    <FileUpload.ItemName className="text-gray-500 text-sm" />
+                                    <FileUpload.ItemSizeText  className="text-xs text-gray-600"/>
                                 </div>
-                                <FileUpload.ItemSizeText  className="text-xs text-gray-600"/>
                                 <FileUpload.ItemDeleteTrigger>
                                     <FormIconButton colorSchema="primary">
                                         <BiTrash ></BiTrash>
@@ -44,6 +46,8 @@ const FormFileField = ({label, fileField} : Props) => {
                                 </FileUpload.ItemDeleteTrigger>
                             </FileUpload.Item>
                         ))
+                        }
+                      </div>
                     }
                 </FileUpload.Context>
             </FileUpload.ItemGroup>

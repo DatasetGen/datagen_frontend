@@ -1,9 +1,7 @@
-import React from "react";
-import {BiKey, BiLock, BiShapePolygon, BiSquare, BiTrash} from "react-icons/bi";
+import { BiKey, BiLock, BiLockOpen, BiShapePolygon, BiSquare, BiTrash, BiZoomIn } from 'react-icons/bi';
 import { useEditorCanvasStore } from "../../core/core";
 import {useParams} from "react-router";
 import {useDatasetLabels} from "../../../../../../api/app/datasets.ts";
-import {Annotation} from "../../core/core.ts";
 import FormSelect from "../../../../../../component_library/forms/FormSelect.tsx";
 import OptionMenu from "../../../../../../component_library/utils/OptionMenu.tsx";
 import {BsStars} from "react-icons/bs";
@@ -17,6 +15,8 @@ import * as dg from "@ark-ui/react/dialog";
 import Button from "../../../../../../component_library/forms/Button.tsx";
 import FormikButton from "../../../../../../component_library/formik/FormikButton.tsx";
 import FetchLayout from "../../../../../../component_library/layouts/FetchLayout";
+import { Annotation } from '../../core/annotators/types.ts';
+import { useState } from 'react';
 
 const icon = {
     "bounding_box": {
@@ -34,8 +34,8 @@ export default function EditorSidebarElement({annotation}: {annotation: Annotati
     const {canvasInstance, deleteAnnotation, changeAnnotationLabel} = useEditorCanvasStore()
     const {dataset_id} = useParams()
     const {data, status} = useDatasetLabels(parseInt(dataset_id ?? ""))()
+    const [lock, setLock] = useState(false)
     const dialog = useDialog();
-
     const currLabel = data?.results.find(x => x.id == annotation.label)
 
 
@@ -99,8 +99,27 @@ export default function EditorSidebarElement({annotation}: {annotation: Annotati
                             </FormIconButton>
                         </OptionMenu>
                         <div className="flex gap-2">
-                            <FormIconButton colorSchema="secondary">
-                                <BiLock></BiLock>
+                            <FormIconButton colorSchema="secondary" onClick={() => {
+                                canvasInstance?.centerObject(annotation.object)
+                            }}>
+                                <BiZoomIn></BiZoomIn>
+                            </FormIconButton>
+                            <FormIconButton colorSchema="secondary" onClick={() => {
+                                if(!lock) {
+                                    annotation.object.selectable= false
+                                    annotation.object.evented=false
+                                }else {
+                                    annotation.object.selectable= true;
+                                    annotation.object.evented=true;
+                                }
+                                setLock(!lock)
+                            }}>
+                                {
+                                    lock?
+                                        <BiLock></BiLock>
+                                    :
+                                      <BiLockOpen></BiLockOpen>
+                                }
                             </FormIconButton>
                             <FormIconButton colorSchema="secondary" onClick={() => deleteAnnotation(annotation.id)}>
                                 <BiTrash></BiTrash>

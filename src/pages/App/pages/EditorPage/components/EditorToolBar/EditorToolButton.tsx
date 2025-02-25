@@ -22,7 +22,7 @@ export default function EditorToolButton({tool, toolName, children, title} : {
     const { currentTool, canvasInstance } = useEditorCanvasStore()
     const {dataset_id} = useParams()
     const navigate = useNavigate()
-    const {data, status, isFetching} = useDatasetLabels(parseInt(dataset_id ?? ""))()
+    const {data} = useDatasetLabels(parseInt(dataset_id ?? ""))()
     const popover = usePopover({
         positioning: {
             placement:"right-start"

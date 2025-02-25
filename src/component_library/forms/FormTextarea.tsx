@@ -4,9 +4,9 @@ export type FormTextAreaProps = FormContainerProps<HTMLTextAreaElement>
 
 function FormTextArea(props: FormTextAreaProps) {
     return (
-            <FormContainer {...props}>
+            <FormContainer {...props} extraClassName="h-full">
                 {
-                    (props) => <textarea {...props}/>
+                    (props) => <textarea {...props} className={props.className + " " + "!h-full"} />
                 }
             </FormContainer>
     );

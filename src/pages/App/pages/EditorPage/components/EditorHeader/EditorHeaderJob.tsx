@@ -1,18 +1,18 @@
-import React from 'react';
 import FormIconButton from '../../../../../../component_library/forms/FormIconButton';
 import { BiChevronLeft, BiChevronRight, BiChevronsLeft, BiChevronsRight } from 'react-icons/bi';
 import { useNavigate, useParams } from 'react-router';
 import { Slider } from '@ark-ui/react';
 import { useDatasetImage, useDatasetJob } from '../../../../../../api/app/datasets.ts';
+import Spinner from '../../../../../../component_library/utils/Spinner.tsx';
 
-function EditorHeaderJob(props) {
+function EditorHeaderJob() {
   const navigate = useNavigate()
   const {image_id, dataset_id, job_id} = useParams()
   const imageId = parseInt(image_id??"")
-  const {data, status} = useDatasetJob(parseInt(dataset_id ?? ""), parseInt(job_id ?? ""))({}, {
+  const {data } = useDatasetJob(parseInt(dataset_id ?? ""), parseInt(job_id ?? ""))({}, {
     enabled: job_id !== undefined
   })
-  const {data: image, status: datasetImageStatus} = useDatasetImage(parseInt(dataset_id ?? ""),imageId)({}, {
+  const {data: image } = useDatasetImage(parseInt(dataset_id ?? ""),imageId)({}, {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     retry: 0,
@@ -20,7 +20,7 @@ function EditorHeaderJob(props) {
   })
   const imageIndex = data?.images.indexOf(imageId)?? 0;
 
-  if(!image || !data) return <div>loading...</div>
+  if(!image || !data) return <Spinner size="lg" colorSchema="brand_primary"/>
   return (
     <div className="flex items-center gap-6">
       <div className="flex gap-1">

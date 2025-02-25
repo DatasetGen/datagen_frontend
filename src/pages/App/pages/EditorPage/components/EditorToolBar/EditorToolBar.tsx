@@ -40,12 +40,6 @@ function EditorToolBar() {
                 <BiShapePolygon></BiShapePolygon>
             </EditorToolButton>
             <div className="w-full h-[1px] bg-gray-100"></div>
-            {
-                /*
-
-
-                 */
-            }
             <EditorIaButton colorSchema="secondary" >
                 <BsStars></BsStars>
             </EditorIaButton>

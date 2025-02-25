@@ -11,6 +11,7 @@ export class BoundingBoxTool implements EditorTool {
     private onMouseMove: (opt: TPointerEventInfo<MouseEvent>) => void = () => {};
     private onKeyDown: (opt: KeyboardEvent) => void = () => {};
     private createdElements : Object[] = []
+    private previewEvent: () => void = () => {};
 
     constructor(public readonly label : DatasetLabel) {
     }
@@ -65,6 +66,19 @@ export class BoundingBoxTool implements EditorTool {
             visible: false,
             absolutePositioned: true,
         });
+
+        this.previewEvent = () => {
+            horizontalLine.set({
+                strokeWidth: 3/(canvas.getZoom()/0.8)
+            })
+            previewRect.set({
+                strokeWidth: 3/(canvas.getZoom()/0.8)
+            })
+            verticalLine.set({
+                strokeWidth: 3/(canvas.getZoom()/0.8)
+            })
+        }
+        canvas.on("mouse:wheel", this.previewEvent)
 
         this.createdElements.push(verticalLine);
         this.createdElements.push(horizontalLine);
@@ -138,6 +152,7 @@ export class BoundingBoxTool implements EditorTool {
         canvas._canEditElements = this.stack.pop()
         canvas.defaultCursor = this.stack.pop()
         canvas.remove(...this.createdElements);
+        canvas.off("mouse:wheel", this.previewEvent)
         canvas.off("mouse:down", this.onMouseDown)
         canvas.off("mouse:move", this.onMouseMove)
         window.removeEventListener("keydown", this.onKeyDown)

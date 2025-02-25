@@ -18,6 +18,11 @@ import EditorPage from "./App/pages/EditorPage/EditorPage.tsx";
 import DatasetLabelling from "./App/pages/DatasetDetailed/pages/Labelling/DatasetLabelling.tsx";
 import FetchLayout from "../component_library/layouts/FetchLayout";
 import BatchDetailed from "./App/pages/DatasetDetailed/pages/BatchDetailed/BatchDetailed.tsx";
+import DataWorkbench from './App/pages/DatasetDetailed/pages/DataWorkbench/DataWorkbench.tsx';
+import UploadFilesPage from './App/pages/DatasetDetailed/pages/UploadFiles/UploadFilesPage.tsx';
+import DataWorkbenchDetailed from './App/pages/DatasetDetailed/pages/DataWorkbench/pages/DataWorkbenchDetailed.tsx';
+import DataAugmentation from './App/pages/DataAugmentation/DataAugmentation.tsx';
+import DataGen from './App/pages/DatasetDetailed/pages/DataGen/DataGen.tsx';
 
 const OnlyAuthenticated = ({ children }: {children : React.ReactNode}) => {
     const { data, isLoading, isError } = useAuth();
@@ -55,9 +60,16 @@ function DefaultRoutes() {
                         <Route path="dataset_general" element={<DatasetHomePage/>}></Route>
                         <Route path="dataset_configuration" element={<DatasetConfigurationPage/>}></Route>
                         <Route path="dataset_data" element={<DatasetDataPage/>}></Route>
+                        <Route path="dataset_generation" element={<DataGen/>}></Route>
                         <Route path="dataset_jobs" element={<DatasetLabelling/>}/>
+                        <Route path="dataset_workbench" element={<DataWorkbench/>}>
+                        </Route>
+                        <Route path="dataset_workbench/:batch_id" element={<DataWorkbenchDetailed/>}/>
+                        <Route path="dataset_upload" element={<UploadFilesPage/>}/>
                     </Route>
                     <Route path="configuration" element={<ConfigurationPage/>}>
+                    </Route>
+                    <Route path="datasets/:dataset_id/dataset_workbench/:batch_id/data_augmentation" element={<OnlyAuthenticated><DataAugmentation/></OnlyAuthenticated>}>
                     </Route>
                 </Route>
                 <Route path="/app/datasets/:dataset_id/job/:job_id/image/:image_id" element={<OnlyAuthenticated><EditorPage/></OnlyAuthenticated>}>

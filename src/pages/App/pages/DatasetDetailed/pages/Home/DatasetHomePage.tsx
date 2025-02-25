@@ -4,6 +4,7 @@ import FetchLayout from "../../../../../../component_library/layouts/FetchLayout
 import DatasetHomeStats from "./components/DatasetHomeStats.tsx";
 import ImagesPerLabelBarChart from "./components/ImagesPerLabelBarChart.tsx";
 import RealVsSyntheticDataPieChart from "./components/RealVsSyntheticDataPieChart.tsx";
+import PageLayout from '../../../../../../component_library/layouts/PageLayout.tsx';
 
 function DatasetHomePage() {
 
@@ -11,7 +12,7 @@ function DatasetHomePage() {
     const {data, status} = useDataset(parseInt(dataset_id ?? ""))()
 
     return (
-        <FetchLayout statusArray={[status,]}>
+        <PageLayout status={status} title="Home">
             <div className="grid gap-4">
                 <DatasetHomeStats data={data}/>
                 <div className="grid grid-cols-5 gap-4">
@@ -23,7 +24,7 @@ function DatasetHomePage() {
                     </div>
                 </div>
             </div>
-        </FetchLayout>
+        </PageLayout>
     );
 }
 

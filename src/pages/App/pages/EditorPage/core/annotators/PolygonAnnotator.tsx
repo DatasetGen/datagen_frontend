@@ -25,7 +25,7 @@ export class PolygonAnnotator implements Annotator<PolygonAnnotation> {
             left: point[0],
             top: point[1],
             fill: addAlpha(label?.color ?? "", 0.3),
-            strokeWidth: 2,
+            strokeWidth: 3/(this.canvas.getZoom()/0.8),
             stroke: addAlpha(label?.color ?? "", 1),
             strokeUniform: true,
             noScaleCache: true,
@@ -52,10 +52,14 @@ export class PolygonAnnotator implements Annotator<PolygonAnnotation> {
             this?.canvas.renderAll();
         });
 
-        polygon.on("mousewheel", () => {
+        const event = () => {
             polygon.set({
                 strokeWidth: 3/(this.canvas.getZoom()/0.8)
             })
+        }
+        this.canvas.on("mouse:wheel", event)
+        polygon.on("removed", () => {
+            this.canvas.off("mouse:wheel", event)
         })
 
         this.canvas.add(polygon)

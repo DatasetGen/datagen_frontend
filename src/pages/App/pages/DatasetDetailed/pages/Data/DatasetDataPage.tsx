@@ -10,6 +10,8 @@ import EmptyImage from '../../../../../../assets/datasetsEmpty.png';
 import Title from '../../../../../../component_library/texts/Title.tsx';
 import Paragraph from '../../../../../../component_library/texts/Paragraph.tsx';
 import Button from '../../../../../../component_library/forms/Button.tsx';
+import { BiUpload } from 'react-icons/bi';
+import PageLayout from '../../../../../../component_library/layouts/PageLayout.tsx';
 
 const DataGenOptions = [
     {
@@ -32,13 +34,14 @@ const DataGenOptions = [
 function DataEmpty(){
     const {dataset_id} = useParams()
     const navigate = useNavigate()
-    return <div className="w-full flex flex-col items-center justify-center gap-3">
+    return
+    <div className="w-full flex flex-col items-center justify-center gap-3">
         <img className="max-w-[400px] mb-[-60px]" src={EmptyImage}/>
         <Title size="md" colorSchema="primary">You don't images yet</Title>
-        <Paragraph size="sm" colorSchema="secondary">Go to labeling page and start uploading images</Paragraph>
+        <Paragraph size="sm" colorSchema="secondary">Start uploading images</Paragraph>
         <div className="max-w-[300px] mt-3">
-        <Button onClick={() => navigate(`/app/datasets/${dataset_id}/dataset_jobs`)}>
-            Labeling page
+        <Button onClick={() => navigate(`/app/datasets/${dataset_id}/dataset_upload`)}>
+            Upload Images <BiUpload></BiUpload>
         </Button>
         </div>
     </div>
@@ -49,20 +52,20 @@ function DataEmpty(){
 function DatasetDataPage() {
 
     const {dataset_id} = useParams()
-    const filters = useFilters<{page:string}>()
+    const filters = useFilters<{page:string, page_size: number}>()
     const {data, status} = useDatasetImages(parseInt(dataset_id ?? ""))(filters)
 
     return (
-      <>
-            <div className="w-full flex justify-between gap-4 py-4">
-                <div className="w-full max-w-[600px]">
-                    <FormikPagination size="sm" colorSchema="secondary" name="page" paginationProps={{
-                        count: data?.count ?? 0,
-                        siblingCount: 1,
-                        pageSize: filters.page_size ?? 0
-                    }}></FormikPagination>
-                </div>
+      <PageLayout title="Dataset data">
+        <div className="w-full flex justify-between gap-4 py-4">
+            <div className="w-full max-w-[600px]">
+                <FormikPagination size="sm" colorSchema="secondary" name="page" paginationProps={{
+                    count: data?.count ?? 0,
+                    siblingCount: 1,
+                    pageSize: filters.page_size ?? 0
+                }}></FormikPagination>
             </div>
+        </div>
         <FetchLayout status={status}  isEmpty={(data?.results.length ?? 0) < 1} emptyComponent={<DataEmpty/>}>
             <div className="grid lg:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5  gap-4">
             {
@@ -76,7 +79,7 @@ function DatasetDataPage() {
             }
             </div>
         </FetchLayout>
-      </>
+      </PageLayout>
     )
         ;
 }

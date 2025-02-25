@@ -1,33 +1,85 @@
 import PageLayout from "../../../../component_library/layouts/PageLayout.tsx";
-import {Outlet, useParams} from "react-router";
+import { Outlet, useNavigate, useParams } from 'react-router';
 import {useDataset} from "../../../../api/app/datasets.ts";
 import FetchLayout from "../../../../component_library/layouts/FetchLayout";
 import TabNavigation from "../../../../component_library/navigation/Tabs.tsx";
-import {BiData, BiDownload, BiExport} from "react-icons/bi";
+import {
+    BiBot, BiChart,
+    BiCog,
+    BiData,
+    BiDownload,
+    BiExport,
+    BiFoodTag,
+    BiHome,
+    BiLabel,
+    BiStar,
+    BiStats, BiTag,
+    BiUpload,
+} from 'react-icons/bi';
 import OptionMenu from "../../../../component_library/utils/OptionMenu.tsx";
 import FormIconButton from "../../../../component_library/forms/FormIconButton.tsx";
-import {FaRegFileZipper} from "react-icons/fa6";
+import {
+    FaArrowLeft,
+    FaChartArea,
+    FaChartBar,
+    FaChartColumn,
+    FaDatabase,
+    FaRegFileZipper,
+    FaTag,
+    FaUpload,
+    FaUpLong,
+} from 'react-icons/fa6';
 import {TbBrandGoogleDrive} from "react-icons/tb";
+import { BsHouse, BsStars } from 'react-icons/bs';
+import { FaCog, FaHome } from 'react-icons/fa';
+import { Sidebar } from '../../../../component_library/navigation/Sidebar';
+import { MdGeneratingTokens } from 'react-icons/md';
+import { RiAiGenerate, RiBardLine, RiStarSFill } from 'react-icons/ri';
 
 const elements = [
     {
-        name: "Home",
-        url: "dataset_general",
+        title:"GENERAL",
+        icon: <BiChart/>,
+        label: "Home",
+        path: "dataset_general",
         pathname: "dataset_general"
     },
     {
-        name: "Data",
-        url : "dataset_data",
+        icon: <BiData size={13}></BiData>,
+        label: "Data exploration",
+        path : "dataset_data",
         pathname: "dataset_data"
     },
     {
-        name: "Labeling",
-        url : "dataset_jobs",
+        icon: <RiAiGenerate></RiAiGenerate>,
+        title:"DATA FLOW",
+        label: "Generate images",
+        path : "dataset_generation",
+        pathname: "dataset_generation"
+    },
+    {
+        icon: <BiUpload></BiUpload>,
+        label: "Upload images",
+        path : "dataset_upload",
+        pathname: "dataset_upload"
+    },
+    {
+        icon: <RiBardLine></RiBardLine>,
+        label: "Data Workbench",
+        path : "dataset_workbench",
+        pathname: "dataset_workbench"
+    },
+    {
+        icon: <BiTag size={15}></BiTag>,
+        label: "Labeling",
+        path : "dataset_jobs",
         pathname: "dataset_jobs"
     },
     {
-        name: "Configuration",
-        url: "dataset_configuration",
+        icon: <BiCog></BiCog>,
+        title:"SETTINGS",
+        label: "Configuration",
+        path: "dataset_configuration",
         pathname: "dataset_configuration"
     },
 ]
@@ -54,13 +106,26 @@ function DatasetDetailedPage() {
 
     const {dataset_id} = useParams();
     const {status, data} = useDataset(parseInt(dataset_id ?? ""))();
+    const navigate = useNavigate()
 
     return (
         <FetchLayout status={status}>
-            <PageLayout isDetailed size="xl" title={data?.name} backPage="/app/datasets" headerExtension={<HeaderExtension/>}>
-                <TabNavigation size="md" elements={elements}></TabNavigation>
-                <Outlet></Outlet>
-            </PageLayout>
+            <Sidebar.Wrapper>
+                <Sidebar.Bar size="md" elements={elements}
+                             title={<div className="flex gap-3 mb-6">
+                             <div onClick={() => navigate('/app/datasets/')} className="h-[30px] text-gray-500 cursor-pointer w-[30px] flex justify-center items-center bg-gray-200 rounded-full hover:bg-gray-300">
+                                 <FaArrowLeft></FaArrowLeft>
+                             </div>
+                             <h1 className="text-gray-900 font-semibold text-base">
+                                 {data?.name}
+                             </h1>
+                             </div>}
+
+                ></Sidebar.Bar>
+                <Sidebar.Content size="md">
+                    <Outlet></Outlet>
+                </Sidebar.Content>
+            </Sidebar.Wrapper>
         </FetchLayout>
     );
 }

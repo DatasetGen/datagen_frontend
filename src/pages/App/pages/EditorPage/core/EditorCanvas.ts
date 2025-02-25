@@ -101,6 +101,17 @@ export class EditorCanvas extends fabric.Canvas {
         this.renderAll();
     }
 
+    public centerObject(object: fabric.Object){
+        const objCenter = object.getCenterPoint();
+        this.zoomToPoint(new fabric.Point(objCenter.x, objCenter.y), 1.5);
+        this.viewportTransform[4] = this.width / 2 - objCenter.x * this.getZoom();
+        this.viewportTransform[5] = this.height / 2 - objCenter.y * this.getZoom();
+        this.requestRenderAll();
+        const event = new WheelEvent("wheel", { deltaY: 0 });
+        this.upperCanvasEl.dispatchEvent(event);
+        object.setCoords();
+    }
+
     get canEditElements() {
         return this._canEditElements;
     }

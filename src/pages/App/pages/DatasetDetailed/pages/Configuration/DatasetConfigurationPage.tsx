@@ -9,12 +9,11 @@ import DatasetLabelCreateFormDialog from "./components/DatasetLabelCreateFormDia
 import {useDialog} from "@ark-ui/react";
 import EmptyLabels from '../../../../../../assets/emptyLabels.png';
 import Paragraph from '../../../../../../component_library/texts/Paragraph.tsx';
+import PageLayout from '../../../../../../component_library/layouts/PageLayout.tsx';
 
 function DataEmpty(){
-  const {dataset_id} = useParams()
-  const navigate = useNavigate()
   return <div className="w-full flex flex-col items-center justify-center gap-3 mt-10">
-    <img className="max-w-[400px] mb-[-20px]" src={EmptyLabels}/>
+    <img className="max-w-[400px]" src={EmptyLabels}/>
     <Title size="md" colorSchema="primary">You don't have labels yet</Title>
     <Paragraph size="sm" colorSchema="secondary">Add your first label to start working</Paragraph>
   </div>
@@ -27,7 +26,7 @@ function DatasetConfigurationPage() {
     const createLabelDialog = useDialog()
 
     return (
-        <div className="mt-5">
+        <PageLayout className="mt-5" title="Configuration">
             <DatasetLabelCreateFormDialog dialog={createLabelDialog}/>
               <div className="flex gap-2 w-full justify-between">
                   <Title size="md">Labels</Title>
@@ -44,7 +43,7 @@ function DatasetConfigurationPage() {
                 }
                 </div>
             </FetchLayout>
-        </div>
+        </PageLayout>
     );
 }
 

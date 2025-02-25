@@ -10,7 +10,7 @@ function FormikFormField({name, children} : FormikFormFieldProps) {
     const [ ,meta, ] = useField(name);
 
     return (
-        <div>
+        <div className="h-full">
             {
                 children
             }

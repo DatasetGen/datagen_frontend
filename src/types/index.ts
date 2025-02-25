@@ -71,6 +71,7 @@ export type Batch = {
     timestamp: string;  // ISO 8601 format
     dataset: number;
     unassigned: number;
+    synthetic: number;
 };
 
 

@@ -32,7 +32,10 @@ export class PanningPlugin implements EditorPlugin{
                 canvas.requestRenderAll();
                 canvas.lastPosX = e.clientX;
                 canvas.lastPosY = e.clientY;
-            }
+                canvas.getObjects().forEach(object => {
+                    object.setCoords()
+                })
+        }
         this.mouseUp = () => {
             canvas.setViewportTransform(canvas.viewportTransform);
             canvas.isDragging = false;

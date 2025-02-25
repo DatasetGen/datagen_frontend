@@ -15,7 +15,7 @@ export default {
       colors: {
         brand_primary: {
           50: lighten(0.4, basePrimaryColor),
-          100: lighten(0.35, basePrimaryColor),
+          100: lighten(0.30, basePrimaryColor),
           200: lighten(0.25, basePrimaryColor),
           300: lighten(0.15, basePrimaryColor),
           400: lighten(0.05, basePrimaryColor),

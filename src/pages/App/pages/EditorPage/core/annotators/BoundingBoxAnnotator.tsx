@@ -23,7 +23,7 @@ export class BoundingBoxAnnotator implements Annotator<BoundingBoxAnnotation> {
             left: point[0],
             top: point[1],
             stroke: addAlpha(label?.color ?? "", 1.3),
-            strokeWidth: 2,
+            strokeWidth: 3/(this.canvas.getZoom()/0.8),
             fill: addAlpha(label?.color ?? "", 0.3),
             width: size[0],
             height: size[1],
@@ -34,6 +34,7 @@ export class BoundingBoxAnnotator implements Annotator<BoundingBoxAnnotation> {
             transparentCorners: false,
             cornerStrokeColor: addAlpha(label?.color ?? "", 1),
             borderColor: addAlpha(label?.color ?? "", 1),
+            objectCaching: false,
         });
         rect.on("mouseover", () => {
             rect.set({
@@ -49,10 +50,14 @@ export class BoundingBoxAnnotator implements Annotator<BoundingBoxAnnotation> {
             this?.canvas.renderAll();
         });
 
-        rect.on("mousewheel", () => {
+        const event = () => {
             rect.set({
                 strokeWidth: 3/(this.canvas.getZoom()/0.8)
             })
+        }
+        this.canvas.on("mouse:wheel", event)
+        rect.on("removed", () => {
+            this.canvas.off("mouse:wheel", event)
         })
         this.canvas.add(rect)
 

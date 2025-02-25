@@ -18,7 +18,7 @@ function BatchDetailed(props) {
     });
 
     return (
-          <PageLayout title={"Batch name: "+ data?.name} isDetailed={true} status={status}>
+          <PageLayout title={"Batch name: "+ data?.name} isDetailed={true} status={status} backPage={`/app/datasets/${dataset_id}/dataset_jobs`}>
                   <div className="w-full flex justify-between gap-4 py-4">
                       <div className="w-full max-w-[600px]">
                           <FormikPagination size="sm" colorSchema="secondary" name="page" paginationProps={{

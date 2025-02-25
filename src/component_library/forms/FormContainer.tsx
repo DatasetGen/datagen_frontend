@@ -8,10 +8,11 @@ export interface FormContainerProps<e> extends StyleSystemProps, Omit<Omit<React
     leftIcon?: (props: Partial<e>, setProps:  React.Dispatch<React.SetStateAction<Partial<e>>>) => React.ReactNode,
     children?: (props: React.HTMLProps<e>) => React.ReactNode,
     invalid?: boolean,
-    label?: string
+    label?: string,
+    extraClassName?: string
 }
 
-function FormContainer<e>({size, leftIcon, rightIcon, colorSchema, label, children, invalid, ...props}: FormContainerProps<e>) {
+function FormContainer<e>({size, leftIcon, rightIcon, colorSchema, label, children, invalid, extraClassName,...props}: FormContainerProps<e>) {
     const {base, input} = formContainerStyles({
         colorSchema,
         size,
@@ -21,11 +22,11 @@ function FormContainer<e>({size, leftIcon, rightIcon, colorSchema, label, childr
     const [extendedProps, setExtendedProps] = useState<Partial<e>>({})
 
     return (
-        <div className="grid gap-2">
+        <div className="flex flex-col gap-2 h-full">
             {
                 label && <label className="font-semibold text-gray-600 text-sm">{label}</label>
             }
-            <div className={base()}>
+            <div className={base() + " " + extraClassName}>
                 {
                     leftIcon && leftIcon({...props, ...extendedProps}, setExtendedProps)
                 }

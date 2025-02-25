@@ -44,6 +44,7 @@ export const useDatasetBatches = (dataset_pk : number) => (
 export const useDatasetBatch = (dataset_pk : number, batch_pk : number) => (
     createQueryHook<Batch>(["datasets", dataset_pk, "batches", batch_pk], `/datasets/${dataset_pk}/batches/${batch_pk}/`)
 )
+export const useModifyDatasetBatch = (dataset_id: number, batch_id: number) => createMutationHook<Partial<Job>, Job>("PUT", "/datasets/" + dataset_id +"/batches/"+batch_id+"/")
 export const useCreateBatch = (dataset_id: number) => createMutationHook<{name: string}, Batch>("POST", "/datasets/" + dataset_id +"/batches/")
 export const useCreateDatasetJob = (dataset_id: number) => createMutationHook<{name: string, status?: string, asignee?: number, category?:number}, Job>("POST", "/datasets/" + dataset_id +"/jobs/")
 export const useModifyDatasetJob = (dataset_id: number, job_id: number) => createMutationHook<Partial<Job>, Job>("PUT", "/datasets/" + dataset_id +"/jobs/"+job_id+"/")

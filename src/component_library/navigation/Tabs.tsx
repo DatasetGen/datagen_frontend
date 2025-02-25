@@ -1,11 +1,13 @@
 import { tv } from "tailwind-variants";
 import { useNavigate } from "react-router";
 import { StyleSystemProps } from "../types.ts";
+import React from 'react';
 
 interface TabElement {
     name: string;
     url: string;
     pathname: string;
+    icon?: React.ReactNode;
 }
 
 interface Props extends StyleSystemProps {
@@ -15,9 +17,9 @@ interface Props extends StyleSystemProps {
 const tabNavigationStyle = tv({
     base: "",
     slots: {
-        container: "text-gray-500 w-full grid grid-cols-2 md:grid-cols-5 lg:grid-cols-8",
+        container: "text-gray-500 w-full grid grid-cols-2 md:grid-cols-5 lg:grid-cols-7",
         tab: "border-none bg-none cursor-pointer group transition-colors duration-500 pt-2 rounded-t-xl",
-        link: "w-full flex justify-center border-none bg-none cursor-pointer transition-colors",
+        link: "w-full flex justify-center border-none bg-none cursor-pointer transition-colors items-center gap-2",
         activeLink: "font-semibold",
         separator: "mt-2 w-full bg-gray-100 h-[2px]",
         bottomSeparator: "w-full bg-gray-100 h-[2px] mt-[-2px]",
@@ -57,11 +59,14 @@ function TabNavigation({ elements, size, colorSchema }: Props) {
     return (
         <div className={styles.base()}>
             <div className={styles.container()}>
-                {elements.map(({ name, url, pathname }) => {
+                {elements.map(({ name, url, pathname, icon }) => {
                     const isActive = location.pathname.includes(pathname);
                     return (
                         <div key={name} className={styles.tab()} onClick={() => navigate(url)}>
-                            <a className={`${styles.link()} ${isActive && styles.activeLink()}`}>{name}</a>
+                            <a className={`${styles.link()} ${isActive && styles.activeLink()}`}>
+                                {icon}
+                                {name}
+                            </a>
                             <div className={`${styles.separator()} ${isActive && styles.activeSeparator()}`} />
                         </div>
                     );

@@ -6,20 +6,23 @@ import {useNavigate} from "react-router";
 interface SidebarElement {
     path?: string;
     label?: string;
+    pathname: string;
+    title?: string;
     icon?: React.ReactNode;
     isBottom?: boolean;
     customComponent?: (props: SidebarProps) => React.ReactNode
 }
 
 interface SidebarProps extends StyleSystemProps {
-    logoImg?: string;
+    reduced?:boolean;
+    title?: React.ReactNode;
     elements: SidebarElement[];
 }
 
-function Sidebar(props: SidebarProps) {
+function Sidebar({reduced, ...props}: SidebarProps) {
     const navigate = useNavigate()
-    const {size, colorSchema, logoImg, elements} = props
-    const {base, logo} = baseStyle({size, colorSchema})
+    const {size, colorSchema, title, elements} = props
+    const {base,} = baseStyle({size, colorSchema, reduced})
 
     const renderElements = (filterCondition: (el: SidebarElement) => boolean) =>
         elements
@@ -30,21 +33,29 @@ function Sidebar(props: SidebarProps) {
                         ?
                         el.customComponent(props)
                         :
+                      <>
+                        {
+                          el.title &&
+                          <p className="text-xs">
+                            {el.title}
+                          </p>
+                        }
                         <div
                             onClick={() => navigate(el?.path ?? "")}
                             key={el.path}
-                            className={innerElementStyle({colorSchema, isActive: location.pathname.includes(el.path ?? "")})}
+                            className={innerElementStyle({colorSchema, isActive: location.pathname.includes(el.pathname ?? ""), reduced: reduced})}
                         >
-                            <div className="text-xl">{el.icon}</div>
-                            {el.label}
+                            <div className="icon">{el.icon}</div>
+                            {!reduced && el.label}
                         </div>
+                      </>
                 )
             ));
 
     return (
         <nav className={base()}>
-            <div className="flex flex-col gap-10">
-                {logoImg && <img className={logo()} src={logoImg} alt="Logo"/>}
+            <div className="flex flex-col">
+                {title}
                 <div className="flex flex-col gap-3">{renderElements(el => !el.isBottom)}</div>
             </div>
             <div className="flex flex-col gap-3">{renderElements(el => el.isBottom === true)}</div>

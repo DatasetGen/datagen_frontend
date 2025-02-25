@@ -8,7 +8,7 @@ function FormikButton(props: Props) {
     const {isSubmitting, isValid, submitForm} = useFormikContext();
 
     return (
-        <Button {...props} disabled={isSubmitting || !isValid} loading={isSubmitting} type="submit" onClick={submitForm}></Button>
+        <Button  disabled={isSubmitting || !isValid} loading={isSubmitting} type="submit" onClick={submitForm} {...props}></Button>
     );
 }
 

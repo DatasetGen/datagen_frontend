@@ -7,21 +7,22 @@ interface FormMenuButtonProps extends ButtonProps{
         title: string,
         icon: React.ReactNode,
         callback: () => void,
-    }[]
+    }[],
+  menuSize: string
 }
 
-function MenuButton({items, ...props} : FormMenuButtonProps) {
+function MenuButton({items, menuSize, ...props} : FormMenuButtonProps) {
     return (
         <Menu.Root>
             <Menu.Trigger asChild>
                 <Button {...props}></Button>
             </Menu.Trigger>
             <Menu.Positioner>
-                <Menu.Content  className="z-20 shadow-[3px_4px_38px_0px_rgba(0,_0,_0,_0.06)] outline-0 bg-white p-3 min-w-[230px] rounded-xl text-gray-700 z-30">
+                <Menu.Content className=" shadow-[3px_4px_38px_0px_rgba(0,_0,_0,_0.06)] outline-0 bg-white p-2 min-w-[230px] rounded-xl text-gray-700 z-30">
                     {
                        items?.map(item => (
                            <div key={item.title} onClick={() => item.callback()}>
-                               <Menu.Item  value="react" className="flex items-center text-sm font-semibold gap-2 p-2 hover:bg-gray-100 rounded-xl cursor-pointer">
+                               <Menu.Item  value="react" className="flex items-center text-xs font-semibold gap-2 p-2 hover:bg-gray-100 rounded-xl cursor-pointer">
                                    {
                                        item.icon
                                    }
