@@ -20,38 +20,37 @@ function DatasetLabelling() {
     const createCategoryDialog = useDialog();
 
     return (
-        <PageLayout status={categoryStatus} title="Labeling Page">
+        <>
             <DatasetJobCategoryCreateForm dialog={createCategoryDialog}/>
-            <div className="gap-2 mt-5 overflow-auto w-full">
-                <div className="flex gap-3 overflow-hidden w-fit min-w-full">
-                    <div className="bg-gray-100 p-4  sticky rounded-xl h-[86vh] w-[350px] z-30 overflow-auto">
-                        <Title>Batch</Title>
-                        <div className="grid gap-2 mt-3">
-                            <div onClick={() => navigate(`/app/datasets/${dataset_id}/dataset_upload`)}
-                                 className="justify-center hover:bg-gray-300 cursor-pointer flex px-3 py-2 rounded-lg gap-2 bg-gray-200 items-center text-sm font-semibold text-gray-600 ">
-                                <BiUpload></BiUpload>
-                                Upload files
-                            </div>
-                            {
-                                categoryData?.results.map(x => (
-                                    <BatchCard key={x.id} batch={x}/>
-                                ))
-                            }
+            <div className="gap-2 overflow-auto h-[100vh] w-full">
+                <h1 className="text-2xl font-semibold text-gray-800 px-10 py-5">Label tasks</h1>
+                <div className="flex gap-3 w-fit min-w-full pl-10 max-h-max">
+                    <div className="bg-gray-100 sticky rounded-xl h-max overflow-auto w-[350px] z-3">
+                        <div className="w-full flex justify-between gap-4 pb-3 items-center p-4 border-b-[1px] border-solid border-gray-200">
+                            <Title>Batch</Title>
                         </div>
-                    </div>
-                    <div className="bg-gray-100 p-4  sticky rounded-xl h-[86vh] overflow-auto w-[350px] z-3">
-                        <DatasetJobColumn title="In progress" filters={{done: false}}></DatasetJobColumn>
-                    </div>
-                    <div className="bg-gray-100 p-4  sticky rounded-xl h-[86vh] overflow-auto w-[350px] z-2">
-                        <DatasetJobColumn title="Reviewing" filters={{done: true, reviewed: false}}></DatasetJobColumn>
-                    </div>
-                    <div className="bg-gray-100 p-4  sticky rounded-xl h-[86vh] overflow-auto w-[350px]">
-                        <DatasetJobColumn title="Done" filters={{done: true, reviewed: true}}></DatasetJobColumn>
+                                <div className="grid grid-cols-1 gap-2 h-[81vh] h-full overflow-auto p-4 ">
+                                    <div onClick={() => navigate(`/app/datasets/${dataset_id}/dataset_upload`)}
+                                         className="justify-center hover:bg-gray-300 cursor-pointer flex px-3 py-2 rounded-lg gap-2 bg-gray-200 items-center text-sm font-semibold text-gray-600 ">
+                                        <BiUpload></BiUpload>
+                                        Upload files
+                                    </div>
+                                    {
+                                        categoryData?.results.map(x => (
+                                          <BatchCard key={x.id} batch={x} />
+                                        ))
+                                    }
+                                </div>
+                        </div>
+                        <DatasetJobColumn title="In progress" filters={{ done: false }}></DatasetJobColumn>
+                        <DatasetJobColumn title="Reviewing"
+                                          filters={{ done: true, reviewed: false }}></DatasetJobColumn>
+                        <DatasetJobColumn title="Done" filters={{ done: true, reviewed: true }}></DatasetJobColumn>
+                        <div className="mr-10"></div>
                     </div>
                 </div>
-            </div>
-        </PageLayout>
-    );
-}
+            </>
+            );
+            }
 
-export default DatasetLabelling;
+            export default DatasetLabelling;

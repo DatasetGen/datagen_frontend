@@ -56,7 +56,7 @@ function PageLayout({ title, children, isDetailed, status, backPage, size = "xl"
 
     return (
         <section className={containerStyle({ size, colorSchema })}>
-            <nav className="flex gap-3 items-center mb-4 justify-between">
+            <nav className="flex gap-3 items-center justify-between">
                 <div className="flex gap-3 items-center">
                 {isDetailed && (
                     <div

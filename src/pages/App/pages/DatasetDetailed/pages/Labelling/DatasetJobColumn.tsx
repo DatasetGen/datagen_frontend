@@ -20,20 +20,25 @@ function DatasetJobColumn({filters, title}: Props) {
     const dialog = useDialog()
 
     return (
+      <div className="bg-gray-100 sticky rounded-xl h-max overflow-auto w-[350px] z-3">
         <FetchLayout status={jobStatus}>
-            <div className="w-full flex justify-between gap-4 pb-3 items-center">
-                <Title>{title}</Title>
-            </div>
-            <div className="grid grid-cols-1 gap-2">
-                {
-                    jobData?.results.map(x => (
-                        <JobCard key={x.id} job={x}></JobCard>
-                    ))
-                }
-            </div>
-        </FetchLayout>
-    );
+          <div className="w-full flex justify-between gap-4 pb-3 items-center p-4 border-b-[1px] border-solid border-gray-200">
+            <Title>{title}</Title>
+          </div>
+          <div className="grid grid-cols-1 gap-2 h-[81vh] h-full overflow-auto p-4 ">
+            {
+              jobData?.results.map(x => (
+                <JobCard key={x.id} job={x}></JobCard>
+              ))
+            }
+          </div>
+      </FetchLayout>
+      </div>
+)
+  ;
 }
 
-const component=  withFilters<{page: number}>(DatasetJobColumn, {page: 1});
+const component = withFilters < { page: number } > (DatasetJobColumn, {
+  page: 1
+});
 export default component;
