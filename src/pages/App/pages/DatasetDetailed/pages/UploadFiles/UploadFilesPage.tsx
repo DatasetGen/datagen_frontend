@@ -94,7 +94,7 @@ function UploadFilesPage() {
                 </div>
               </div>
               :
-              <div className="grid gap-4">
+              <div className="grid gap-4 mt-8">
                 <FormikInput placeholder="Name of the category" name="name" label="Name"></FormikInput>
 
                 <FormikFileField name="zip_file" fileField={{

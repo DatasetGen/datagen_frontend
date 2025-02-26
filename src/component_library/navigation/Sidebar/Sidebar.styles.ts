@@ -57,7 +57,7 @@ export const innerElementStyle = tv({
     variants: {
         colorSchema: {
             primary: "!text-gray-500 hover:bg-gray-200",
-            secondary: "!text-gray-500 hover:bg-gray-200",
+            secondary: "!text-gray-500 hover:bg-gray-100",
             brand_primary: "text-white hover:bg-white !bg-opacity-10",
             brand_secondary: "text-white hover:bg-white !bg-opacity-10",
         },
@@ -89,7 +89,7 @@ export const innerElementStyle = tv({
         {
             isActive: true,
             colorSchema: [ "secondary"],
-            class: "bg-gray-200 !bg-opacity-85"
+            class: "bg-gray-100 !bg-opacity-85"
         },
         {
             isActive: false,

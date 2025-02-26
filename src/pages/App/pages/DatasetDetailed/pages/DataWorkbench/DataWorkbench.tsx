@@ -18,6 +18,7 @@ import FormikButton from '../../../../../../component_library/formik/FormikButto
 import PageLayout from '../../../../../../component_library/layouts/PageLayout.tsx';
 import { BsStars } from 'react-icons/bs';
 import { IoMdPricetag } from 'react-icons/io';
+import { RiBardLine } from 'react-icons/ri';
 
 function BatchCard({ batch }: { batch: Batch }) {
   const date = new Date(batch.timestamp);
@@ -144,13 +145,22 @@ function DataWorkbench() {
   })
 
   return (
-    <PageLayout className="mt-3 flex gap-3" title="Data Workbench">
-        <div className="grid gap-2 grid-cols-3 mt-3">
-          <div onClick={() => navigate(`/app/datasets/${dataset_id}/dataset_upload`)}
-               className="border-[1px] border-solid border-gray-200 justify-center min-h-[150px] hover:bg-gray-200 cursor-pointer flex px-3 py-2 rounded-xl gap-2 bg-gray-100 items-center text-base font-semibold text-gray-600 ">
+    <PageLayout title="Data Workbench">
+      <div className="mt-9 flex gap-3 justify-end">
+        <div className="max-w-[200px]">
+          <Button size="md" onClick={() => navigate(`/app/datasets/${dataset_id}/dataset_generation`)}>
+            <RiBardLine></RiBardLine>
+            Generate images
+          </Button>
+        </div>
+        <div className="max-w-[200px]">
+          <Button size="md" onClick={() => navigate(`/app/datasets/${dataset_id}/dataset_upload`)}>
             <BiUpload></BiUpload>
             Upload files
-          </div>
+          </Button>
+        </div>
+        </div>
+        <div className="grid gap-2 md:grid-cols-3 2xl:grid-cols-4">
           {
             categoryData?.results.map(x => (
               <BatchCard batch={x}></BatchCard>
@@ -158,7 +168,7 @@ function DataWorkbench() {
           }
         </div>
     </PageLayout>
-      );
-      }
+);
+}
 
-      export default DataWorkbench;
+export default DataWorkbench;

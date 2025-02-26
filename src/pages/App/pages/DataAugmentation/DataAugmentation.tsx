@@ -65,34 +65,37 @@ function DataAugmentation() {
               </div>
             </div>
           }
-          <FormikItemPicker
-            name="pipeline"
-            inputs={[
-              {
-                id: 'text_to_image_generation',
-                title: 'Annotated Image Generation',
-                description: 'Generate an image with a prompt and then autolabel it',
-              },
-              {
-                id: 'image_to_image_generation',
-                title: 'Image Variants Generation',
-                description: 'Choose an already existing image and generate multiple samples with text driven variations.',
-                disabled: true,
-              },
-              {
-                id: 'replace_labels_by_others',
-                title: 'Object Replacing',
-                description: 'Choose an already labeled image and substitute all objects of a category by others of the same category',
-                disabled: true,
-              },
-              {
-                id: 'small_object_generation',
-                title: 'Small Object Generation',
-                description: 'Pick a zone of an image (Ej. Sea) and generate concrete objects (Ej. Boats) randomly in that zone',
-                disabled: true,
-              },
-            ]}
-          />
+          <div className="mt-4">
+            <FormikItemPicker
+              label="Pipelines"
+              name="pipeline"
+              inputs={[
+                {
+                  id: 'text_to_image_generation',
+                  title: 'Annotated Image Generation',
+                  description: 'Generate an image with a prompt and then autolabel it',
+                },
+                {
+                  id: 'image_to_image_generation',
+                  title: 'Image Variants Generation',
+                  description: 'Choose an already existing image and generate multiple samples with text driven variations.',
+                  disabled: true,
+                },
+                {
+                  id: 'replace_labels_by_others',
+                  title: 'Object Replacing',
+                  description: 'Choose an already labeled image and substitute all objects of a category by others of the same category',
+                  disabled: true,
+                },
+                {
+                  id: 'small_object_generation',
+                  title: 'Small Object Generation',
+                  description: 'Pick a zone of an image (Ej. Sea) and generate concrete objects (Ej. Boats) randomly in that zone',
+                  disabled: true,
+                },
+              ]}
+            />
+          </div>
         </>
       ),
     }),
@@ -100,8 +103,8 @@ function DataAugmentation() {
       label: 'Configuration',
       component: (
         <div className="mt-5">
-          <label className="text-gray-500 font-semibold">Pick a model for text-to-image generation</label>
           <FormikItemPicker
+          label="Text-to-image generation model"
             name="config.text_to_image_model"
             inputs={[
               {
@@ -117,8 +120,8 @@ function DataAugmentation() {
             ]}
           />
           <div className="mt-5">
-            <label className="text-gray-500 font-semibold">Pick a model for annotation</label>
             <FormikItemPicker
+              label="Labeling model"
               name="config.annotation_models"
               inputs={[
                 {
@@ -151,6 +154,9 @@ function DataAugmentation() {
               <FormikInput label="Negative Prompt for image generation" name="execution.negative_prompt" placeholder="Enter your prompt for generating an image">
               </FormikInput>
           </FormEnhanceInput>
+          <div className="w-fit">
+          <Button colorSchema="primary">Test your prompts</Button>
+          </div>
         </div>
       ),
     }),
@@ -161,7 +167,7 @@ function DataAugmentation() {
       {(formik) => (
         <Form>
           <div className="flex">
-            <div className="w-full max-w-[240px] bg-gray-100 h-[100vh] p-4 border-l-[1px] border-solid border-gray-200">
+            <div className="w-full max-w-[240px] bg-gray-100 h-[100vh] p-4 border-r-[1px] border-solid border-gray-200">
               <div className="flex gap-3 items-center">
                 <div
                   onClick={() => navigate(-1)}

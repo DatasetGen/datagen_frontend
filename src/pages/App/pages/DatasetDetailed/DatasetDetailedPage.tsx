@@ -111,7 +111,7 @@ function DatasetDetailedPage() {
     return (
         <FetchLayout status={status}>
             <Sidebar.Wrapper>
-                <Sidebar.Bar size="md" elements={elements}
+                <Sidebar.Bar size="md" colorSchema="primary" elements={elements}
                              title={<div className="flex gap-3 mb-6">
                              <div onClick={() => navigate('/app/datasets/')} className="h-[30px] text-gray-500 cursor-pointer w-[30px] flex justify-center items-center bg-gray-200 rounded-full hover:bg-gray-300">
                                  <FaArrowLeft></FaArrowLeft>

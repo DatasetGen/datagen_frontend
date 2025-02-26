@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from './Button.tsx';
-import { RiBardLine } from 'react-icons/ri';
+import { RiBardLine, RiSave2Fill, RiSave2Line } from 'react-icons/ri';
 
 
 interface Props{
@@ -15,7 +15,7 @@ function FormEnhanceInput(props) {
           <RiBardLine></RiBardLine>
           <h1 className="font-semibold">AI Tools</h1>
         </div>
-        <div className="w-fit">
+        <div className="w-fit flex gap-2 text-nowrap">
           <Button colorSchema="brand_primary" size="sm">
             Enhance
             <RiBardLine></RiBardLine>

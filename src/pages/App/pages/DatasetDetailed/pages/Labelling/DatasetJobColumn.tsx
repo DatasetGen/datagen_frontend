@@ -25,7 +25,7 @@ function DatasetJobColumn({filters, title}: Props) {
           <div className="w-full flex justify-between gap-4 pb-3 items-center p-4 border-b-[1px] border-solid border-gray-200">
             <Title>{title}</Title>
           </div>
-          <div className="grid grid-cols-1 gap-2 h-[81vh] h-full overflow-auto p-4 ">
+          <div className="grid grid-cols-1 gap-2 h-[81vh] overflow-auto p-4 ">
             {
               jobData?.results.map(x => (
                 <JobCard key={x.id} job={x}></JobCard>

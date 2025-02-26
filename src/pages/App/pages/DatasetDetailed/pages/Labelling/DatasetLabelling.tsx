@@ -29,7 +29,7 @@ function DatasetLabelling() {
                         <div className="w-full flex justify-between gap-4 pb-3 items-center p-4 border-b-[1px] border-solid border-gray-200">
                             <Title>Batch</Title>
                         </div>
-                                <div className="grid grid-cols-1 gap-2 h-[81vh] h-full overflow-auto p-4 ">
+                                <div className="flex flex-col gap-2 h-[81vh] overflow-auto p-4 ">
                                     <div onClick={() => navigate(`/app/datasets/${dataset_id}/dataset_upload`)}
                                          className="justify-center hover:bg-gray-300 cursor-pointer flex px-3 py-2 rounded-lg gap-2 bg-gray-200 items-center text-sm font-semibold text-gray-600 ">
                                         <BiUpload></BiUpload>

@@ -28,7 +28,7 @@ function DatasetConfigurationPage() {
     return (
         <PageLayout className="mt-5" title="Configuration">
             <DatasetLabelCreateFormDialog dialog={createLabelDialog}/>
-              <div className="flex gap-2 w-full justify-between">
+              <div className="flex gap-2 w-full justify-between mt-6">
                   <Title size="md">Labels</Title>
                   <FormIconButton size="md" colorSchema="primary" onClick={() => createLabelDialog.setOpen(true)}>
                     <IoMdAdd></IoMdAdd>

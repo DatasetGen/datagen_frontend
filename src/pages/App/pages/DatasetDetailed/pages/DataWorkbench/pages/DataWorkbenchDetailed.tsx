@@ -27,7 +27,7 @@ function DataWorkbenchDetailed(props) {
   return (
     <PageLayout title={batchData?.name} isDetailed={true}>
       <FetchLayout status={status}  isEmpty={(images?.results.length ?? 0) < 1}>
-        <div className="w-full justify-between mt-2 flex">
+        <div className="w-full justify-between flex mt-10">
           <div className="max-w-[300px] w-full">
             <FormInput placeholder="Search images" leftIcon={() => <BiSearch/>}></FormInput>
           </div>
@@ -46,7 +46,7 @@ function DataWorkbenchDetailed(props) {
           </div>
         </div>
         </div>
-        <div className="grid lg:grid-cols-2 xl:grid-cols-3 gap-4 w-full mt-3">
+        <div className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 w-full mt-3">
           {
             images?.results.map((image) => (
               <DatasetImageOptionMenu key={image.id} image={image}>
