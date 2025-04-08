@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, Outlet, useNavigate, useParams } from 'react-router';
 import Title from '../../../../../../component_library/texts/Title.tsx';
-import { BiTag, BiUpload } from 'react-icons/bi';
-import { useDatasetBatches, useModifyDatasetBatch } from '../../../../../../api/app/datasets.ts';
+import { BiPlus, BiTag, BiUpload } from 'react-icons/bi';
+import { useCreateBatch, useDatasetBatches, useModifyDatasetBatch } from '../../../../../../api/app/datasets.ts';
 import { Batch } from '../../../../../../types';
 import Button from '../../../../../../component_library/forms/Button.tsx';
 import { FaArrowRight } from 'react-icons/fa6';
@@ -19,6 +19,8 @@ import PageLayout from '../../../../../../component_library/layouts/PageLayout.t
 import { BsStars } from 'react-icons/bs';
 import { IoMdPricetag } from 'react-icons/io';
 import { RiBardLine } from 'react-icons/ri';
+import FormikFileInput from '../../../../../../component_library/formik/FormikFileInput.tsx';
+import { FormikInput } from '../../../../../../component_library/formik/FormikInputs.tsx';
 
 function BatchCard({ batch }: { batch: Batch }) {
   const date = new Date(batch.timestamp);
@@ -48,6 +50,7 @@ function BatchCard({ batch }: { batch: Batch }) {
               name: batch.name,
               workbench: false,
             });
+            dialog.setOpen(false)
           }}
         >
           {({ setFieldValue, values }) => (
@@ -140,34 +143,61 @@ function DataWorkbench() {
   const { dataset_id, batch_id } = useParams();
   const navigate = useNavigate()
   const {data: categoryData, status: categoryStatus} = useDatasetBatches(parseInt(dataset_id ?? ""))({
-    "unassigned_gt": 0,
     "workbench": true
   })
+  const {mutateAsync} = useCreateBatch(parseInt(dataset_id ?? ""))({
+    onSuccess: async (data) => {
+      await queryClient.invalidateQueries({
+        queryKey: ["datasets", parseInt(dataset_id ?? ""), "batches"]
+      })
+
+    }
+  })
+  const createDialog = useDialog()
 
   return (
-    <PageLayout title="Data Workbench">
-      <div className="mt-9 flex gap-3 justify-end">
-        <div className="max-w-[200px]">
-          <Button size="md" onClick={() => navigate(`/app/datasets/${dataset_id}/dataset_generation`)}>
-            <RiBardLine></RiBardLine>
-            Generate images
-          </Button>
+    <>
+      <Dialog size="md" dialog={createDialog} title="Create empty batch">
+        <FormikForm  initialValues={{name: ""}} onSubmit={async (values) => {
+          await mutateAsync(values)
+        }}>
+        <div className="grid gap-3 mt-5">
+          <FormikInput name="name" placeholder="Batch name"></FormikInput>
+          <FormikButton>Create Batch</FormikButton>
         </div>
-        <div className="max-w-[200px]">
-          <Button size="md" onClick={() => navigate(`/app/datasets/${dataset_id}/dataset_upload`)}>
-            <BiUpload></BiUpload>
-            Upload files
-          </Button>
+
+        </FormikForm>
+      </Dialog>
+      <PageLayout title="Data Workbench">
+        <div className="mt-9 flex gap-3 justify-end">
+          <div className="max-w-[200px]">
+            <Button size="md" colorSchema="primary" onClick={() => navigate(`/app/datasets/${dataset_id}/dataset_generation`)}>
+              <RiBardLine></RiBardLine>
+              Generate images
+            </Button>
+          </div>
+          <div className="max-w-[200px]" >
+            <Button colorSchema="primary" size="md" onClick={() => navigate(`/app/datasets/${dataset_id}/dataset_upload`)}>
+              <BiUpload></BiUpload>
+              Upload files
+            </Button>
+          </div>
+          <div className="max-w-[200px]">
+            <Button size="md" onClick={() => createDialog.setOpen(true)}>
+              <BiPlus></BiPlus>
+              Empty batch
+            </Button>
+          </div>
         </div>
-        </div>
-        <div className="grid gap-2 md:grid-cols-3 2xl:grid-cols-4">
+        <div className="grid gap-2 md:grid-cols-3 2xl:grid-cols-4 mt-4">
           {
             categoryData?.results.map(x => (
               <BatchCard batch={x}></BatchCard>
             ))
           }
         </div>
-    </PageLayout>
+      </PageLayout>
+    </>
 );
 }
 

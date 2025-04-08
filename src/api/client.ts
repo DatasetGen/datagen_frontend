@@ -5,6 +5,10 @@ export const apiClient = axios.create({
     baseURL: `${import.meta.env.VITE_API_URL}/api/v1/`,
 });
 
+export const aiClient = axios.create({
+  baseURL: `${import.meta.env.VITE_AI_API_URL}/`,
+})
+
 apiClient.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem("token");

@@ -26,27 +26,22 @@ function DataWorkbenchDetailed(props) {
 
   return (
     <PageLayout title={batchData?.name} isDetailed={true}>
-      <FetchLayout status={status}  isEmpty={(images?.results.length ?? 0) < 1}>
         <div className="w-full justify-between flex mt-10">
           <div className="max-w-[300px] w-full">
             <FormInput placeholder="Search images" leftIcon={() => <BiSearch/>}></FormInput>
           </div>
           <div className="flex gap-2">
-          <div className="w-[160px] ">
-            <Button size="md">
-              <BiShapePolygon></BiShapePolygon>
-              Autolabel
-            </Button>
-          </div>
           <div className="w-[160px]">
             <Button size="md" onClick={() => navigate('data_augmentation')}>
               <BsStars></BsStars>
-              Augment Data
+              Data generation
             </Button>
           </div>
         </div>
         </div>
+      <FetchLayout status={status}  isEmpty={(images?.results.length ?? 0) < 1}>
         <div className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 w-full mt-3">
+
           {
             images?.results.map((image) => (
               <DatasetImageOptionMenu key={image.id} image={image}>

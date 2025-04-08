@@ -49,8 +49,7 @@ function EditorHeader() {
                 className="absolute border-b-2 border-gray-200 w-full bg-white flex gap-3 items-center p-3 z-30 justify-between">
                 <div className="flex items-center gap-3">
                     <FormIconButton size="md" rounded colorSchema="primary" onClick={() => {
-                        if(job_id) navigate(`/app/datasets/${dataset_id}/dataset_jobs/`)
-                        else navigate(`/app/datasets/${dataset_id}/dataset_data`)
+                        navigate(-1)
                     }}>
                         <MdArrowBack></MdArrowBack>
                     </FormIconButton>

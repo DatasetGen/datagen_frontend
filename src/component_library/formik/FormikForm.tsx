@@ -12,7 +12,7 @@ interface Props<T> extends Omit<React.HTMLProps<HTMLDivElement>, 'onSubmit'> {
 
 function Form<T>({initialValues, validationSchema, onSubmit, children, fetchErrors, ...props} : Props<T>) {
     return (
-        <Formik enableReinitialize={true} validationSchema={validationSchema} initialValues={initialValues} onSubmit={onSubmit}>
+        <Formik validationSchema={validationSchema} initialValues={initialValues} onSubmit={onSubmit}>
             {
                 ({submitForm}) => (
                     <div onKeyDown={async (e) =>{
