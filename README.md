@@ -1,7 +1,3 @@
-Aquí tienes una versión mejorada, más clara, ordenada y profesional del `README.md` del **Datagen Frontend**, manteniendo toda la información útil y expandiéndola para una mejor comprensión:
-
----
-
 # 🖼️ Datagen Frontend
 
 **Datagen Frontend** es la interfaz web del proyecto Datagen, una plataforma SaaS para la generación y anotación de datasets mediante inteligencia artificial. Esta aplicación permite a los usuarios gestionar datasets, imágenes, anotaciones, usuarios y trabajos desde una experiencia gráfica moderna y responsiva.
