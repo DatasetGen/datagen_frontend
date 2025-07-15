@@ -68,24 +68,33 @@ docker run -p 80:80 datagen-frontend
 
 ---
 
+
 ## 📁 Estructura de carpetas
 
 ```
 datagen-frontend/
 │
-├── public/               # Archivos estáticos públicos
-├── src/                  # Código fuente principal
-│   ├── components/       # Componentes reutilizables
-│   ├── features/         # Módulos de funcionalidad agrupados por entidad
-│   ├── hooks/            # Custom React Hooks
-│   ├── pages/            # Páginas principales de la aplicación
-│   ├── routes/           # Rutas y navegación
-│   ├── services/         # Llamadas a la API / servicios externos
-│   └── utils/            # Utilidades generales
-├── Dockerfile            # Imagen de producción
-├── vite.config.ts        # Configuración de Vite
+├── src/                            # Código fuente principal
+│   ├── api/                        # Llamadas a servicios REST (Datagen backend)
+│   ├── assets/                     # Imágenes, íconos y otros archivos estáticos
+│   ├── business_components/        # Componentes específicos del dominio (features)
+│   ├── component_library/          # Componentes reutilizables y genéricos (UI library)
+│   ├── pages/                      # Vistas principales y rutas asociadas
+│   ├── stores/                     # Estados globales (Zustand u otro state manager)
+│   ├── types/                      # Definiciones de tipos y modelos (TypeScript)
+│
+├── public/                         # Archivos estáticos públicos
+├── Dockerfile                      # Imagen de producción
+├── vite.config.ts                  # Configuración de Vite
 └── README.md
 ```
+
+### 🧩 ¿Cómo se organizan los componentes?
+
+* **`component_library/`** contiene los bloques reutilizables estilo UI kit: botones, inputs, modales, tooltips, etc.
+* **`business_components/`** agrupa componentes funcionales con lógica de negocio, como formularios, tablas con lógica, o flujos relacionados a datasets, usuarios, anotaciones, etc.
+* **`pages/`** usa estos componentes para formar pantallas completas.
+
 
 ---
 
