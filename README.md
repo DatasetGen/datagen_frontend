@@ -126,7 +126,3 @@ Antes de abrir una solicitud de incorporación de cambios (pull request):
    ```
 
 2. Sigue las convenciones de componentes y nomenclatura del proyecto.
-
----
-
-¿Deseas que lo acompañe con un diagrama de estructura visual o un archivo `CONTRIBUTING.md` para nuevas personas desarrolladoras?
