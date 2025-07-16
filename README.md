@@ -1,4 +1,5 @@
 # 🖼️ Datagen Frontend
+![Principio 1](https://github.com/user-attachments/assets/b760b6a2-ccf1-46f2-94eb-c048a5bd2d41)
 
 **Datagen Frontend** es la interfaz web del proyecto Datagen, una plataforma SaaS para la generación y anotación de datasets mediante inteligencia artificial. Esta aplicación permite a los usuarios gestionar datasets, imágenes, anotaciones, usuarios y trabajos desde una experiencia gráfica moderna y responsiva.
 
